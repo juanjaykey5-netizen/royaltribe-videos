@@ -2,7 +2,7 @@
 uso:
   python3 tools/escolher_estilo.py fin|bib            -> imprime a escolha (nao grava)
   python3 tools/escolher_estilo.py registrar SISTEMA ESTILO FORMATO ASSUNTO COR FONTE VOZ MUSICA   -> grava no estilos_usados.md
-Regra (Juan): cor, fonte, voz e musica nao repetem por pelo menos 7 videos seguidos; estilo nao repete nos ultimos 3.
+Regra (Juan): cor, fonte e musica nao repetem por 7 videos; voz (so 4 em PT) nao repete nos ultimos 3; estilo nos ultimos 3.
 Cada video usa spec com "theme": COR e "font": FONTE (sobrescreve a fonte do tema), voz = voiceId no vidiq_voiceover_generate, musica = audio/music_<MUSICA>.mp3."""
 import sys, os, random, datetime
 LOG = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'estilos_usados.md')
@@ -12,10 +12,10 @@ CORES = {'fin': ['royal', 'esmeralda', 'ameixa', 'grafite', 'oceano', 'por-do-so
          'bib': ['aljava', 'lavanda', 'rosa-fofo', 'menta', 'oceano', 'por-do-sol', 'ameixa', 'esmeralda', 'royal']}
 FONTES = ['poppins', 'montserrat', 'nunito', 'oswald', 'merriweather', 'dmsans', 'fira', 'crimson', 'anton', 'archivo']
 MUSICAS = ['lofi', 'bright', 'calm', 'groove', 'warm', 'jazz', 'drive', 'dream', 'pulse']
-# vozes em PT primeiro; as demais leem portugues com sotaque (ElevenLabs multilingue). Confirmar com o Juan.
+# Vozes: SOMENTE as 4 em portugues nativo (decisao do Juan). Com 4 vozes a janela de voz e 3 (nao repete nos ultimos 3 videos).
 VOZES = {'Keren': '33B4UnXyTNbgLmdEDh5P', 'Roberta': 'RGymW84CSmfVugnA5tvA', 'Diego': 'rpNe0HOx7heUulPiOEaG',
-         'Will-PT': 'CstacWqMhJQlnfLPxRG4', 'Sarah': 'EXAVITQu4vr4xnSDxMaL', 'Eric': 'cjVigY5qzO86Huf0OWal',
-         'Brian': 'nPczCjzI2devNBz1zQrb', 'Matilda': 'XrExE9yKIg1WjnnlVkGX'}
+         'Will-PT': 'CstacWqMhJQlnfLPxRG4'}
+JANELA_VOZ = 3
 COLS = ['data', 'sistema', 'estilo', 'formato', 'assunto', 'cor', 'fonte', 'voz', 'musica']
 def ler():
     rows = []
@@ -33,7 +33,7 @@ def livre(pool, rows, col, n):
     m = min(ult.values()); return random.choice([x for x in cand if ult[x] == m])
 def escolher(sis):
     rows = ler(); random.seed(datetime.datetime.now().timestamp())
-    voz = livre(list(VOZES), rows, 'voz', JANELA)
+    voz = livre(list(VOZES), rows, 'voz', JANELA_VOZ)
     return dict(estilo=livre(ESTILOS, rows, 'estilo', 3), cor=livre(CORES[sis], rows, 'cor', JANELA),
                 fonte=livre(FONTES, rows, 'fonte', JANELA), voz=voz, voiceId=VOZES[voz], musica=livre(MUSICAS, rows, 'musica', JANELA))
 if __name__ == '__main__':

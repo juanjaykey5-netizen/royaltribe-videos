@@ -1,5 +1,5 @@
 # Estilos usados (financas + biblia). Uma linha por video, a mais nova no fim.
-# REGRA DO JUAN: cor, fonte, voz e musica NAO podem repetir por pelo menos 7 videos seguidos (financas e biblia contam juntos); estilo nao repete nos ultimos 3.
+# REGRA DO JUAN: cor, fonte e musica NAO repetem por pelo menos 7 videos seguidos (financas e biblia contam juntos); voz so entre as 4 em portugues (Keren, Roberta, Diego, Will-PT) e nao repete nos ultimos 3; estilo nao repete nos ultimos 3.
 # Antes de produzir: python3 tools/escolher_estilo.py fin|bib (sorteia o que esta livre). Depois de produzir: python3 tools/escolher_estilo.py registrar SISTEMA ESTILO FORMATO ASSUNTO COR FONTE VOZ MUSICA
 # Spec: "theme": COR, "font": FONTE; voz = voiceId do vidiq_voiceover_generate; musica = audio/music_<MUSICA>.mp3. Nao reutilize nada acima dentro da janela.
 # formato: AAAA-MM-DD | sistema (fin|bib) | estilo | formato do roteiro | assunto | cor | fonte | voz | musica   (? = nao registrado)
