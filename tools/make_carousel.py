@@ -37,6 +37,33 @@ def background(c):
 def over(img, draw_fn):
     lay = Image.new('RGBA', img.size, (0, 0, 0, 0)); draw_fn(ImageDraw.Draw(lay)); img.alpha_composite(lay)
 
+def wide_background(c, n):
+    """Fundo panoramico (n*W x H): os slides sao fatias dele, entao linha, brilhos e desenhos atravessam as emendas."""
+    import math
+    WW = W * n; img = Image.new('RGB', (WW, H)); d = ImageDraw.Draw(img)
+    for y in range(H):
+        t = y / (H - 1); d.line([(0, y), (WW, y)], fill=tuple(int(c.bg0[i] + (c.bg1[i] - c.bg0[i]) * t) for i in range(3)))
+    bl = Image.new('RGBA', (WW, H), (0, 0, 0, 0)); bd = ImageDraw.Draw(bl)
+    for k in range(n * 2):
+        x = int(W * (k + 0.5) / 2 * 1.0 + (k % 3) * 40); y = [260, 980, 560, 1180, 380, 820][k % 6]; r = [260, 300, 220, 320, 240, 280][k % 6]
+        col = [c.a2, c.a1, c.bg1, c.a2][k % 4]; a = [34, 26, 120, 30][k % 4]
+        bd.ellipse([x - r, y - r, x + r, y + r], fill=tuple(col[:3]) + (a,))
+    bl = bl.filter(ImageFilter.GaussianBlur(70)); img = Image.alpha_composite(img.convert('RGBA'), bl); d = ImageDraw.Draw(img)
+    # linhas douradas continuas no topo e na base
+    d.line([(0, 44), (WW, 44)], fill=c.a1 + (255,), width=4); d.line([(0, 60), (WW, 60)], fill=c.a1 + (110,), width=2)
+    d.line([(0, H - 44), (WW, H - 44)], fill=c.a1 + (255,), width=4); d.line([(0, H - 60), (WW, H - 60)], fill=c.a1 + (110,), width=2)
+    # fio ondulado que atravessa todos os slides (y ~ 1185)
+    pts = [(x, 1186 + 14 * math.sin(x / 150.0)) for x in range(0, WW + 1, 6)]
+    d.line(pts, fill=c.a1 + (200,), width=4, joint='curve')
+    for k in range(0, n * 6):
+        x = int(WW * (k + 0.5) / (n * 6)); y = 1186 + 14 * math.sin(x / 150.0); d.ellipse([x - 6, y - 6, x + 6, y + 6], fill=c.a2 + (255,))
+    return img
+
+def seam_art(img, c, n, kinds):
+    for k in range(1, n):
+        kind = kinds[(k - 1) % len(kinds)]; sz = 210; im = ART.draw(kind, sz)
+        img.alpha_composite(im, (int(W * k - sz / 2), int(1186 - sz / 2 - 6)))
+
 def frame(img, c):
     d = ImageDraw.Draw(img)
     d.rounded_rectangle([44, 44, W - 44, H - 44], 44, outline=c.a1 + (255,), width=4)
@@ -90,16 +117,18 @@ def footer(img, c, i):
 def art_at(img, kind, cx, cy, size):
     im = ART.draw(kind, size); img.alpha_composite(im, (int(cx - size / 2), int(cy - size / 2)))
 
-def slide(c, s, i):
-    img = background(c); frame(img, c); d = ImageDraw.Draw(img); t = s['type']
+def slide(c, s, i, bg=None):
+    if bg is None: img = background(c); frame(img, c)
+    else: img = bg
+    d = ImageDraw.Draw(img); t = s['type']
     if t == 'capa':
         logo_top(img, c, 150)
         chip(img, c, s.get('chip', 'ALERTA BÍBLICO'), X0, 290, alert=True)
         y = text_block(d, s['title'], c.bold, X0, 385, X1 - X0, 400, 104, 64, WHITE, lh=1.12)
         text_block(d, s['sub'], c.med, X0, y + 16, X1 - X0, 180, 44, 30, c.a2 + (255,))
         art_at(img, s.get('art', 'estrela'), 540, 1000, 280)
-        f = font(c.bold, 32); d.text((X1 - f.getlength('ARRASTE') - 56, 1156), 'ARRASTE', font=f, fill=c.a1 + (255,))
-        d.line([(X1 - 44, 1174), (X1, 1174)], fill=c.a1 + (255,), width=6); d.polygon([(X1 + 2, 1174), (X1 - 14, 1162), (X1 - 14, 1186)], fill=c.a1 + (255,))
+        f = font(c.bold, 32); d.text((X1 - f.getlength('ARRASTE') - 56, 1086), 'ARRASTE', font=f, fill=c.a1 + (255,))
+        d.line([(X1 - 44, 1104), (X1, 1104)], fill=c.a1 + (255,), width=6); d.polygon([(X1 + 2, 1104), (X1 - 14, 1092), (X1 - 14, 1116)], fill=c.a1 + (255,))
     else:
         logo_top(img, c, 104)
         if t == 'texto':
@@ -144,10 +173,17 @@ def slide(c, s, i):
     return img.convert('RGB')
 
 def build(spec_path, outdir):
-    spec = json.load(open(spec_path)); os.makedirs(outdir, exist_ok=True); c = Ctx(spec)
-    for i, s in enumerate(spec['slides'], 1):
-        slide(c, s, i).save(os.path.join(outdir, f'slide_{i:02d}.png'), optimize=True)
-    print('ok', len(spec['slides']), 'slides')
+    spec = json.load(open(spec_path)); os.makedirs(outdir, exist_ok=True); c = Ctx(spec); n = c.n
+    if spec.get('continuo', True):  # carrossel continuo (panoramico)
+        wide = wide_background(c, n); seam_art(wide, c, n, spec.get('seam_art', ['estrela', 'nuvem', 'ovelha', 'pomba', 'sol', 'coracao', 'arca']))
+        for i, s in enumerate(spec['slides'], 1):
+            bg = wide.crop((W * (i - 1), 0, W * i, H)).copy()
+            slide(c, s, i, bg=bg).save(os.path.join(outdir, f'slide_{i:02d}.png'), optimize=True)
+        wide.convert('RGB').resize((W * n // 4, H // 4)).save(os.path.join(outdir, 'panorama_previa.png'))
+    else:
+        for i, s in enumerate(spec['slides'], 1):
+            slide(c, s, i).save(os.path.join(outdir, f'slide_{i:02d}.png'), optimize=True)
+    print('ok', n, 'slides')
 
 if __name__ == '__main__':
     build(sys.argv[1], sys.argv[2])
