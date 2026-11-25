@@ -172,12 +172,30 @@ def slide(c, s, i, bg=None):
     footer(img, c, i)
     return img.convert('RGB')
 
+def photo_bg(bg, path, tint=0.42, fade=130):
+    """Cola uma ilustracao (IA, 2:3) como fundo do slide: cobre 1080x1350, escurece com a cor do tema (texto legivel)
+    e dissolve as bordas esquerda/direita para o fundo continuo do carrossel."""
+    path = path if os.path.isabs(path) else os.path.join(HERE, '..', path)
+    im = Image.open(path).convert('RGB'); sc = W / im.width
+    im = im.resize((W, int(im.height * sc)), Image.LANCZOS); y0 = max(0, int((im.height - H) * 0.42)); im = im.crop((0, y0, W, y0 + H))
+    shade = Image.new('RGB', (W, H), tuple(bg.getpixel((W // 2, H // 2))[:3]))
+    a = Image.new('L', (1, H))
+    for y in range(H): a.putpixel((0, y), int(255 * min(1, tint + 0.22 * (1 - abs(y / H - 0.5) * 2))))
+    im = Image.composite(shade, im, a.resize((W, H)))
+    m = Image.new('L', (W, 1))
+    for x in range(W): m.putpixel((x, 0), int(255 * min(1, x / fade, (W - 1 - x) / fade)))
+    out = bg.copy(); out.paste(im, (0, 0), m.resize((W, H))); return out
+
 def build(spec_path, outdir):
     spec = json.load(open(spec_path)); os.makedirs(outdir, exist_ok=True); c = Ctx(spec); n = c.n
+    imgs = spec.get('imagens') or []
+    pos = {}
+    if imgs: pos = {max(1, min(n, round(1 + k * (n - 1) / max(1, len(imgs) - 1)))): im for k, im in enumerate(imgs)} if len(imgs) > 1 else {1: imgs[0]}
     if spec.get('continuo', True):  # carrossel continuo (panoramico)
         wide = wide_background(c, n); seam_art(wide, c, n, spec.get('seam_art', ['estrela', 'nuvem', 'ovelha', 'pomba', 'sol', 'coracao', 'arca']))
         for i, s in enumerate(spec['slides'], 1):
             bg = wide.crop((W * (i - 1), 0, W * i, H)).copy()
+            if i in pos: bg = photo_bg(bg, pos[i], spec.get('foto_tint', 0.42))
             slide(c, s, i, bg=bg).save(os.path.join(outdir, f'slide_{i:02d}.png'), optimize=True)
         wide.convert('RGB').resize((W * n // 4, H // 4)).save(os.path.join(outdir, 'panorama_previa.png'))
     else:

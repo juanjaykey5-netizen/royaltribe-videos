@@ -218,7 +218,7 @@ def build(spec_path, outdir):
         i = 0
         for j, s0 in enumerate(M.STARTS):
             if s0 <= tg + 1e-6: i = j
-        if scenes[i].get('img'): return bg_img(scenes[i]['img'], max(0, min(1, (tg - M.STARTS[i]) / durs[i])))
+        if scenes[i].get('img'): return bg_img(scenes[i]['img'], max(0, min(1, (tg - M.STARTS[i]) / durs[i])), scenes[i].get('tint', 0.5))
         return BGS[scenes[i].get('bg', default_bg)](tg)
     M.background = bgsel
     M.SRC_Y0 = 235
