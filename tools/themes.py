@@ -16,6 +16,7 @@ THEMES = {
     'ameixa':   dict(font='nunito',     bg0=(28, 10, 48), bg1=(74, 30, 104), a1=(255, 128, 176), a2=(130, 222, 255)),
     'grafite':  dict(font='oswald',     bg0=(10, 12, 16), bg1=(40, 44, 56),  a1=(255, 98, 64),   a2=(255, 212, 0)),
     'oceano':   dict(font='merriweather',   bg0=(3, 26, 52),  bg1=(0, 92, 122),  a1=(255, 218, 160), a2=(92, 224, 232)),
+    'aljava':   dict(font='merriweather', bg0=(22, 12, 8),  bg1=(96, 56, 30),  a1=(240, 184, 96),  a2=(247, 238, 220)),
     'por-do-sol': dict(font='dmsans',   bg0=(38, 12, 24), bg1=(112, 42, 52), a1=(255, 180, 70),  a2=(255, 124, 104)),
 }
 MUSICS = ['lofi', 'bright', 'calm', 'groove', 'warm']

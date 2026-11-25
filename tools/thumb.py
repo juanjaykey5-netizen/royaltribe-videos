@@ -24,6 +24,6 @@ def center(txt, y, font, fill):
 center(l1, 700, fit(l1, 860, 130), (255, 255, 255))
 center(l2, 860, fit(l2, 860, 190), th['a1'])
 center(sub, 1120, fit(sub, 860, 56, FM), tuple(min(255, c + 90) for c in th['a2']))
-lg = Image.open(os.path.join(themes.ROOT, 'brand', 'royal_signature_transparente.png')).convert('RGBA'); lg.thumbnail((300, 300))
+lg = Image.open((sys.argv[6] if len(sys.argv) > 6 else os.path.join(themes.ROOT, 'brand', 'royal_signature_transparente.png'))).convert('RGBA'); lg.thumbnail((300, 300))
 bg.paste(lg, ((W - lg.width) // 2, 340), lg)
 bg.save(out)

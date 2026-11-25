@@ -17,10 +17,13 @@ def pop(img, txt, y, size, col, t, t0, font='Poppins-Bold'):
 def hook(sp):
     def f(img, t):
         la = eo3(pr(t, 0, 0.4))
-        tw = F('Poppins-Bold', 32).getlength('ROYAL SIGNATURE'); lw0 = M._logo(92).width
-        x0 = (W - (lw0 + 20 + tw)) / 2
-        lw = logo(img, x0, 245, 92, a=la)
-        T(img, 'ROYAL SIGNATURE', x0 + lw + 20, 291, 32, M.LIGHT, a=0.95 * la, anchor='lm')
+        if BRAND_NAME:
+            tw = F('Poppins-Bold', 32).getlength(BRAND_NAME); lw0 = M._logo(92).width
+            x0 = (W - (lw0 + 20 + tw)) / 2
+            lw = logo(img, x0, 245, 92, a=la)
+            T(img, BRAND_NAME, x0 + lw + 20, 291, 32, M.LIGHT, a=0.95 * la, anchor='lm')
+        else:  # logo ja traz o nome da marca: centralizado no topo
+            logo(img, W / 2, 232, 160, a=la, center=True)
         T(img, sp['l1'], W / 2, 440, 86, WHITE, a=eo3(pr(t, 0.1, 0.4)))
         T(img, sp['l2'], W / 2, 550, 86, WHITE, a=eo3(pr(t, 0.4, 0.4)))
         pop(img, sp['big'], 730, 190, GOLD, t, 0.9)
@@ -108,7 +111,7 @@ def cta(sp):
         T(img, sp['b'], W / 2, 600, 60, WHITE, a=eo3(pr(t, 0.9, 0.4)))
         T(img, sp['c'], W / 2, 680, 60, WHITE, a=eo3(pr(t, 1.1, 0.4)))
         la = eo3(pr(t, 1.6, 0.6)); logo(img, W / 2, 800 + (1 - la) * 40, 400, a=la, center=True)
-        T(img, 'ROYAL SIGNATURE', W / 2, 1250, 46, M.LIGHT, a=eo3(pr(t, 2.0, 0.5)))
+        if BRAND_NAME: T(img, BRAND_NAME, W / 2, 1250, 46, M.LIGHT, a=eo3(pr(t, 2.0, 0.5)))
         da = eo3(pr(t, 2.8, 0.5))
         for i, ln in enumerate(sp['disc']):
             T(img, ln, W / 2, 1350 + 50 * i, 32, MUTED, a=da, font='Poppins-Medium')
@@ -129,7 +132,14 @@ def verse(sp):
 
 TYPES = {'verse': verse, 'hook': hook, 'stat': stat, 'calc': calc, 'cards': cards, 'rule': rule, 'cta': cta}
 
+BRAND_NAME = 'ROYAL SIGNATURE'
+
 def apply_theme(spec):
+    global BRAND_NAME
+    br = spec.get('brand')  # {"logo": "brand/x.png", "name": ""} - sem 'brand' = Royal Signature
+    if br:
+        M.LOGO_PATH = os.path.join(M.HERE, '..', br['logo']); M._logo.cache_clear(); BRAND_NAME = br.get('name', '')
+
     th = themes.THEMES[spec.get('theme', 'royal')]
     fb, fm = themes.FONTS[th['font']]
     M.FONTMAP.update({'Poppins-Bold': fb, 'Poppins-Medium': fm})
