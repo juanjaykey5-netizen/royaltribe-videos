@@ -1,6 +1,6 @@
 """Gerador generico de videos Royal Signature a partir de um spec JSON.
 uso: python3 make_template.py spec.json outdir   (renderiza cenas s1..s6.mp4 e junta em silent.mp4)
-spec: {"durs":[6 duracoes em s], "scenes":[{type:hook|stat|calc|cards|rule|cta, ...}]}
+spec: {"theme":"royal|esmeralda|ameixa|grafite|oceano|por-do-sol", "durs":[6 duracoes em s], "scenes":[{type:hook|stat|calc|cards|rule|cta, ...}]}
 """
 import sys, os, json, math, subprocess
 from concurrent.futures import ThreadPoolExecutor
@@ -8,9 +8,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import make as M
 from make import *
-M.LOGO_PATH = os.environ.get('LOGO_PATH', os.path.join(HERE, '..', 'brand', 'royal_signature_transparente.png')) if os.path.exists(os.path.join(HERE, '..', 'brand')) else M.LOGO_PATH
-if not os.path.exists(M.LOGO_PATH):
-    M.LOGO_PATH = os.path.join(HERE, 'brand', 'royal_signature_transparente.png')
+import themes
 DESIGN = {'hook': 5.0, 'stat': 8.0, 'calc': 8.0, 'cards': 10.0, 'rule': 8.0, 'cta': 6.0}
 
 def pop(img, txt, y, size, col, t, t0, font='Poppins-Bold'):
@@ -18,8 +16,11 @@ def pop(img, txt, y, size, col, t, t0, font='Poppins-Bold'):
 
 def hook(sp):
     def f(img, t):
-        la = eo3(pr(t, 0, 0.4)); lw = logo(img, 60, 245, 92, a=la)
-        T(img, 'ROYAL SIGNATURE', 60 + lw + 20, 291, 32, M.LIGHT, a=0.95 * la, anchor='lm')
+        la = eo3(pr(t, 0, 0.4))
+        tw = F('Poppins-Bold', 32).getlength('ROYAL SIGNATURE'); lw0 = M._logo(92).width
+        x0 = (W - (lw0 + 20 + tw)) / 2
+        lw = logo(img, x0, 245, 92, a=la)
+        T(img, 'ROYAL SIGNATURE', x0 + lw + 20, 291, 32, M.LIGHT, a=0.95 * la, anchor='lm')
         T(img, sp['l1'], W / 2, 440, 86, WHITE, a=eo3(pr(t, 0.1, 0.4)))
         T(img, sp['l2'], W / 2, 550, 86, WHITE, a=eo3(pr(t, 0.4, 0.4)))
         pop(img, sp['big'], 730, 190, GOLD, t, 0.9)
@@ -80,7 +81,7 @@ def cards(sp):
             RR(img, (x0, y0, x0 + 960, y0 + 250), 34, (255, 255, 255, 30), a=a)
             RR(img, (x0, y0, x0 + 14, y0 + 250), 7, GOLD + (255,), a=a)
             circle(img, x0 + 100, y0 + 125, 52, GOLD, a=a)
-            T(img, n, x0 + 100, y0 + 122, 60, DARK, a=a, shadow=False)
+            T(img, n, x0 + 100, y0 + 122, 60, M.BG0, a=a, shadow=False)
             T(img, ti, x0 + 185, y0 + 62, 46, WHITE, a=a, anchor='lm')
             T(img, l1, x0 + 185, y0 + 140, 34, MUTED, a=a, anchor='lm', font='Poppins-Medium')
             T(img, l2, x0 + 185, y0 + 190, 34, MUTED, a=a, anchor='lm', font='Poppins-Medium')
@@ -115,8 +116,17 @@ def cta(sp):
 
 TYPES = {'hook': hook, 'stat': stat, 'calc': calc, 'cards': cards, 'rule': rule, 'cta': cta}
 
+def apply_theme(spec):
+    th = themes.THEMES[spec.get('theme', 'royal')]
+    fb, fm = themes.FONTS[th['font']]
+    M.FONTMAP.update({'Poppins-Bold': fb, 'Poppins-Medium': fm})
+    M.BG0, M.BG1 = th['bg0'], th['bg1']
+    M.BLOBS = [tuple(min(255, c + 60) for c in th['bg1']) + (90,), th['a2'] + (38,), th['a1'] + (30,), tuple(min(255, c + 40) for c in th['bg1']) + (70,)]
+    g = globals(); g['GOLD'] = th['a1']; g['TEAL'] = th['a2']; g['DARK'] = th['bg0']; M.GOLD = th['a1']; M.TEAL = th['a2']
+
 def build(spec_path, outdir):
     spec = json.load(open(spec_path)); os.makedirs(outdir, exist_ok=True)
+    apply_theme(spec)
     scenes = spec['scenes']; durs = spec['durs']
     old = [DESIGN[s['type']] for s in scenes]
     M.OLD_DURS = old; M.DURS = durs

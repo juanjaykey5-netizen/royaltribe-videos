@@ -4,6 +4,10 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 W, H, FPS = 1080, 1920, 30
 FD = '/usr/share/fonts/truetype/google-fonts/'
+HERE = os.path.dirname(os.path.abspath(__file__))
+FONTMAP = {}  # 'Poppins-Bold'/'Poppins-Medium' -> caminho do tema
+BG0 = (8, 20, 48); BG1 = (20, 44, 98)
+BLOBS = [(40, 80, 160, 70), (24, 194, 156, 38), (245, 183, 0, 30), (60, 100, 190, 60)]
 GOLD = (245, 183, 0)
 TEAL = (24, 194, 156)
 WHITE = (255, 255, 255)
@@ -13,7 +17,7 @@ DARK = (8, 20, 48)
 
 OLD_DURS = [4.5, 7.5, 7.0, 10.6, 7.8, 5.0]   # tempos em que as animacoes das cenas foram desenhadas
 DURS = list(OLD_DURS)
-_tj = os.environ.get('TIMING_JSON', '/home/claude/vid/timing.json')
+_tj = os.environ.get('TIMING_JSON', os.path.join(HERE, 'timing.json'))
 if os.path.exists(_tj):
     import json as _json
     DURS = _json.load(open(_tj))['durs']
@@ -26,7 +30,8 @@ G = 1.0  # global alpha for the scene fade
 
 @lru_cache(maxsize=None)
 def F(name, size):
-    return ImageFont.truetype(FD + name + '.ttf', int(size))
+    path = FONTMAP.get(name) or (FD + name + '.ttf')
+    return ImageFont.truetype(path, int(size))
 
 
 def cl(x): return max(0.0, min(1.0, x))
@@ -43,7 +48,7 @@ def bg_base():
     d = ImageDraw.Draw(im)
     for y in range(480):
         k = y / 479
-        c = tuple(int(DARK[i] * (1 - k) + (20, 44, 98)[i] * k) for i in range(3))
+        c = tuple(int(BG0[i] * (1 - k) + BG1[i] * k) for i in range(3))
         d.line([(0, y), (270, y)], fill=c)
     return im
 
@@ -52,8 +57,8 @@ def background(tg):
     im = bg_base().copy().convert('RGBA')
     ov = Image.new('RGBA', (270, 480), (0, 0, 0, 0))
     d = ImageDraw.Draw(ov)
-    specs = [(60, 90, 70, 0.0, (40, 80, 160, 70)), (210, 190, 90, 1.7, (24, 194, 156, 38)),
-             (90, 330, 80, 3.1, (245, 183, 0, 30)), (220, 430, 60, 4.4, (60, 100, 190, 60))]
+    specs = [(60, 90, 70, 0.0, BLOBS[0]), (210, 190, 90, 1.7, BLOBS[1]),
+             (90, 330, 80, 3.1, BLOBS[2]), (220, 430, 60, 4.4, BLOBS[3])]
     for (x, y, r, ph, col) in specs:
         cx = x + 18 * math.sin(tg * 0.5 + ph)
         cy = y + 22 * math.cos(tg * 0.4 + ph)
@@ -122,7 +127,7 @@ def circle(img, cx, cy, r, fill, a=1.0, outline=None, width=0):
     _over(img, layer, (int(cx - r - pad), int(cy - r - pad)))
 
 
-LOGO_PATH = '/home/claude/vid/brand/royal_signature_transparente.png'
+LOGO_PATH = os.path.join(HERE, '..', 'brand', 'royal_signature_transparente.png')
 LIGHT = (230, 231, 232)
 
 
@@ -307,9 +312,9 @@ SCENES = [scene1, scene2, scene3, scene4, scene5, scene6]
 # Keeps clear: top ~290 px (status bar / search / header), bottom ~540 px (username, caption,
 # progress bar), right ~190 px (like/comment/share buttons), left ~110 px.
 SRC_Y0, SRC_Y1 = 235, 1600
-SAFE_K = 0.795
-DST_Y0 = 300
-DST_CX = 500
+SAFE_K = 0.77
+DST_Y0 = 320
+DST_CX = 540   # centrado (antes 500 deixava o conteudo para a esquerda)
 
 
 def frame(si, t):

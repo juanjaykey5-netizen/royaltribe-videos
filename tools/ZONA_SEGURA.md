@@ -19,3 +19,7 @@ de cada cena; o `make.py` lê esse arquivo (variável TIMING_JSON) e acelera as 
 Fluxo: `python3 trim_narr.py narracao.mp3 cuts.json audio/narracao_curta.wav timing.json`, renderizar as cenas,
 juntar e `python3 mix.py audio/narracao_curta.wav audio/musica.mp3 silent.mp4 saida.mp4 timing.json`.
 No vídeo "Crédito do zero": 42,4 s -> 38,1 s.
+
+
+## Atualizacao 25/11: centralizacao
+SAFE_K=0.77, DST_CX=540 (centro real do video), DST_Y0=320. Antes DST_CX=500 deixava o conteudo ~40 px para a esquerda. Margens simetricas: ~210 px de cada lado, area livre dos botoes da direita (x>880).

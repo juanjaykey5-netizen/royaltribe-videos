@@ -8,3 +8,9 @@ Exemplo de spec: `tools/spec_fundo_emergencia.json` (`durs` = duracao de cada li
 4. `vidiq_compose` (1 cena video fill, voiceover.audioUrl do vidIQ, music = audio/musica.mp3 raw, duckTo 0.25, fadeMs 1200, loop true) -> `vidiq_job_poll` -> `vidiq_video_upload url=<compose videoUrl>`.
 5. Thumbnail: `python3 tools/thumb.py "L1" "DESTAQUE" "sub" thumbs/NOME.png`, push, `vidiq_upload_image image=<raw url>` -> thumbnailImageId (YouTube).
 6. draft_create -> publish -> status.
+
+## Variedade (tema, fonte, cores e musica)
+- Todo dia: `python3 tools/variety.py` imprime `TEMA MUSICA` (ex.: `esmeralda warm`), girando entre 6 temas (royal, esmeralda, ameixa, grafite, oceano, por-do-sol; cada um com fonte e cores proprias) e 5 trilhas (lofi, bright, calm, groove, warm).
+- Ponha `"theme": "<tema>"` no spec do make_template.py e use `audio/music_<musica>.mp3` (raw GitHub) como music.audioUrl no vidiq_compose.
+- Thumbnail no mesmo tema: `python3 tools/thumb.py "L1" "DESTAQUE" "sub" thumbs/NOME.png <tema>`.
+- Novas trilhas: `python3 tools/music.py ESTILO audio/music_ESTILO.mp3 75`.
