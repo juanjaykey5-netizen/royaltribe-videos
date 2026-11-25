@@ -1,0 +1,8 @@
+{"theme": "rosa-fofo", "durs": [4.13, 7.63, 7.08, 5.41, 5.8, 7.24], "scenes": [
+{"type": "hook", "l1": "A Bíblia nunca", "l2": "citou a maçã", "big": "FRUTO", "ring": "?", "ringlabel": "curiosidade", "sub1": "O que o texto", "sub2": "realmente diz"},
+{"type": "verse", "title": "O que está escrito", "lines": ["tomou do seu fruto,", "e comeu, e deu também", "a seu marido, e ele", "comeu com ela."], "ref": "Gênesis 3:6", "foot": "Almeida Revista e Corrigida", "art": "biblia", "arty": 1420, "artsize": 400},
+{"type": "stat", "title": "Curiosidade", "big": "FRUTO", "unit": "Gênesis 3:6", "line": "o texto não diz qual", "chips": ["Figo", "Uva", "Romã", "Cidra"], "foot": "Fonte: Rutgers Today (2023)", "art": "estrela", "arty": 1490, "artsize": 230},
+{"type": "cards", "t1": "Como a maçã", "t2": "entrou na história", "cards": [["1", "No texto", "Aparece só a palavra", "fruto."], ["2", "Na tradição", "Judeus e cristãos", "sugeriram outros frutos."], ["3", "Na arte", "A maçã veio depois,", "na arte medieval."]], "note": "Conteúdo cristão e educativo."},
+{"type": "rule", "a": "Ler o texto", "b": "com calma", "c": "clareia a Palavra.", "w1": "Reflexão pessoal, não substitui", "w2": "o cuidado de uma igreja local.", "art": "sol", "arty": 1490, "artsize": 230},
+{"type": "cta", "a": "Salve e compartilhe", "b": "e estude a Bíblia", "c": "com o Aljava GC", "disc": ["Conteúdo cristão e educativo.", "Texto bíblico: Almeida Revista e Corrigida.", "Aljava GC"]}
+], "brand": {"logo": "brand/aljava_transparente.png", "name": ""}}
