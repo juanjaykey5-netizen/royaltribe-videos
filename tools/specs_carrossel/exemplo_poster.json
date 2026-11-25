@@ -1,0 +1,48 @@
+{
+ "estilo": "poster",
+ "theme": "grafite",
+ "font": "anton",
+ "slides": [
+  {
+   "type": "cover",
+   "kicker": "Alerta de dívidas",
+   "l1": "Recebeu carta de cobrança?",
+   "hl": "30 dias",
+   "sub": "Arraste e conheça seus direitos"
+  },
+  {
+   "type": "point",
+   "n": 1,
+   "title": "Não ignore a carta",
+   "body": [
+    "O aviso vem por escrito, com valor e credor.",
+    "Você pode contestar por escrito em até 30 dias."
+   ]
+  },
+  {
+   "type": "point",
+   "n": 2,
+   "title": "Peça a verificação",
+   "body": [
+    "Se pedir no prazo, a cobrança deve pausar até a resposta."
+   ]
+  },
+  {
+   "type": "point",
+   "n": 3,
+   "title": "Conheça os limites",
+   "body": [
+    "Em geral, ligações só entre 8h e 21h.",
+    "Ameaças e mentiras sobre o valor são proibidas."
+   ]
+  },
+  {
+   "type": "cta",
+   "l1": "Quer organizar suas dívidas?",
+   "hl": "Fale com a gente",
+   "sub": "Consultoria para famílias brasileiras e hispânicas.",
+   "kw": "CONSULTORIA",
+   "disc": "Fontes: CFPB e FTC. Conteúdo educacional, não é aconselhamento financeiro ou jurídico."
+  }
+ ]
+}

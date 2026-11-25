@@ -1,0 +1,70 @@
+{
+ "estilo": "quiz",
+ "theme": "ameixa",
+ "font": "fira",
+ "slides": [
+  {
+   "type": "cover",
+   "kicker": "Quiz de dívidas",
+   "l1": "Você sabe seus direitos com",
+   "hl": "cobradores?",
+   "sub": "Teste agora"
+  },
+  {
+   "type": "q",
+   "num": "1",
+   "question": "Quantos dias você tem para contestar uma dívida por escrito?",
+   "options": [
+    "7 dias",
+    "30 dias",
+    "90 dias"
+   ],
+   "answer": 1
+  },
+  {
+   "type": "q",
+   "num": "1",
+   "reveal": true,
+   "question": "Quantos dias você tem para contestar uma dívida por escrito?",
+   "options": [
+    "7 dias",
+    "30 dias",
+    "90 dias"
+   ],
+   "answer": 1,
+   "why": "São 30 dias a partir do aviso de validação (CFPB)."
+  },
+  {
+   "type": "q",
+   "num": "2",
+   "question": "Em geral, qual o horário permitido para ligações de cobrança?",
+   "options": [
+    "Só até as 18h",
+    "Entre 8h e 21h",
+    "A qualquer hora"
+   ],
+   "answer": 1
+  },
+  {
+   "type": "q",
+   "num": "2",
+   "reveal": true,
+   "question": "Em geral, qual o horário permitido para ligações de cobrança?",
+   "options": [
+    "Só até as 18h",
+    "Entre 8h e 21h",
+    "A qualquer hora"
+   ],
+   "answer": 1,
+   "why": "Fora de 8h–21h, em geral, não é permitido (CFPB/FTC)."
+  },
+  {
+   "type": "cta",
+   "l1": "Quer organizar suas dívidas?",
+   "hl": "Fale com a gente",
+   "sub": "Consultoria para famílias brasileiras e hispânicas.",
+   "kw": "CONSULTORIA",
+   "disc": "Fontes: CFPB e FTC. Conteúdo educacional, não é aconselhamento financeiro ou jurídico."
+  }
+ ]
+}

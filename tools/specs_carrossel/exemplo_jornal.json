@@ -1,0 +1,53 @@
+{
+ "estilo": "jornal",
+ "theme": "royal",
+ "font": "crimson",
+ "slides": [
+  {
+   "type": "cover",
+   "kicker": "Edição especial: dívidas",
+   "l1": "3 mitos sobre",
+   "hl": "cobrança de dívidas",
+   "sub": "Arraste e confira o que é fato"
+  },
+  {
+   "type": "mito",
+   "myth": "Cobrador pode ligar a qualquer hora.",
+   "fact": "Em geral, ligações só entre 8h e 21h.",
+   "ref": "Fonte: CFPB, consumerfinance.gov"
+  },
+  {
+   "type": "mito",
+   "myth": "Se eu não responder, a carta some.",
+   "fact": "Você tem 30 dias para contestar por escrito.",
+   "ref": "Fonte: CFPB e FTC"
+  },
+  {
+   "type": "point",
+   "tag": "CUIDADO",
+   "title": "Dívida antiga e pagamento parcial",
+   "body": [
+    "Em alguns estados, pagar qualquer valor pode reiniciar o prazo.",
+    "Confirme as regras do seu estado antes de pagar."
+   ]
+  },
+  {
+   "type": "list",
+   "title": "Checklist se um cobrador ligar",
+   "items": [
+    "Peça o aviso de validação por escrito",
+    "Anote datas e horários",
+    "Conteste por escrito em até 30 dias",
+    "Guarde cópia de tudo"
+   ]
+  },
+  {
+   "type": "cta",
+   "l1": "Quer organizar suas dívidas?",
+   "hl": "Fale com a gente",
+   "sub": "Consultoria para famílias brasileiras e hispânicas.",
+   "kw": "CONSULTORIA",
+   "disc": "Fontes: CFPB e FTC. Conteúdo educacional, não é aconselhamento financeiro ou jurídico."
+  }
+ ]
+}

@@ -26,3 +26,6 @@ Mesmo gerador. Cena extra `verse` (title, lines = versiculo em linhas de ~24 car
 
 ## Nao repetir (regra do Juan)
 Cor, fonte e musica nao repetem por pelo menos 7 videos seguidos (voz: so as 4 em PT, nao repete nos ultimos 3) (financas + biblia juntos); estilo nao repete nos ultimos 3. `python3 tools/escolher_estilo.py fin|bib` sorteia o que esta livre (pools: 9 cores, 10 fontes, 9 musicas, 4 vozes PT) e `... registrar` grava em tools/estilos_usados.md. No spec use `"theme"` (cor) e `"font"` (fonte, sobrescreve a do tema); musica = audio/music_<nome>.mp3.
+
+## Carrosseis variados
+`python3 tools/escolher_estilo.py car` escolhe estilo (padrao|jornal|poster|quiz), cor e fonte que nao repetem. `padrao` = make_carousel_fin.py; `jornal`, `poster` e `quiz` = `python3 tools/make_carrossel_estilos.py spec.json outdir both` (modelos em tools/specs_carrossel/exemplo_*.json; tipos cover, point, mito, list, q, cta). Registrar com `escolher_estilo.py registrar car ESTILO FORMATO ASSUNTO COR FONTE - -`.
