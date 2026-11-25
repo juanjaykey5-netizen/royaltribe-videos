@@ -1,7 +1,7 @@
 """Gerador de ESTILOS variados (sem o anel, sem stickers, sem caixas numeradas do gerador padrao).
 uso: python3 tools/make_estilos.py spec.json outdir   -> outdir/silent.mp4
 spec: {"estilo": "cinetico|mito|quiz", "theme": "...", "durs": [...], "brand": {...opcional},
-       "scenes": [{"type": "kin|mito|quizq|quizans", "bg": "liso|split|listras|bokeh", ...}]}
+       "scenes": [{"type": "kin|mito|quizq|quizans", "bg": "liso|split|listras|bokeh", "img": "imagens/arquivo.jpg (opcional: fundo de imagem IA com zoom lento)", ...}]}
 Cenas:
   kin     lines[], hl[indices destacados], sub, ref, logo(bool)   texto cinetico: 1 linha entra por vez
   mito    myth, text, ref, foot                                   tela dividida: o que dizem x o que esta escrito
@@ -186,6 +186,23 @@ def quizans(sp, d):
     return f
 
 
+_imgc = {}
+def bg_img(path, k, tint=0.55):
+    """Fundo de FOTO/ILUSTRACAO (IA): cena com "img": caminho do arquivo (relativo ao repo ou absoluto). Zoom lento (k = 0..1 na cena),
+    cobre 1080x1920 e escurece com degrade para o texto ler bem."""
+    path = path if os.path.isabs(path) else os.path.join(HERE, '..', path)
+    if path not in _imgc:
+        im = Image.open(path).convert('RGB'); sc = max(W * 1.15 / im.width, H * 1.15 / im.height)
+        _imgc[path] = im.resize((int(im.width * sc), int(im.height * sc)), Image.LANCZOS)
+    im = _imgc[path]; z = 1.0 + 0.12 * k; cw, ch = int(W * 1.15 / z), int(H * 1.15 / z)
+    x0, y0 = (im.width - cw) // 2, (im.height - ch) // 2
+    out = im.crop((x0, y0, x0 + cw, y0 + ch)).resize((W, H), Image.BILINEAR)
+    g = Image.new('L', (1, H))
+    for y in range(H): g.putpixel((0, y), int(255 * min(1, tint + 0.25 * abs(y / H - 0.5) * 2)))
+    shade = Image.new('RGB', (W, H), M.BG0)
+    return Image.composite(shade, out, g.resize((W, H)))
+
+
 TYPES = {'kin': kin, 'mito': mito, 'quizq': quizq, 'quizans': quizans}
 
 
@@ -201,6 +218,7 @@ def build(spec_path, outdir):
         i = 0
         for j, s0 in enumerate(M.STARTS):
             if s0 <= tg + 1e-6: i = j
+        if scenes[i].get('img'): return bg_img(scenes[i]['img'], max(0, min(1, (tg - M.STARTS[i]) / durs[i])))
         return BGS[scenes[i].get('bg', default_bg)](tg)
     M.background = bgsel
     M.SRC_Y0 = 235
@@ -219,7 +237,7 @@ if __name__ == '__main__':
         M.STARTS = [sum(durs[:i]) for i in range(len(durs))]; M.TOTAL = sum(durs)
         sc = spec['scenes']; M.SCENES = [TYPES[s['type']](s, durs[i]) for i, s in enumerate(sc)]
         dbg = {'cinetico': 'liso', 'mito': 'split', 'quiz': 'listras'}.get(spec.get('estilo'), 'liso')
-        M.background = lambda tg, sc=sc, dbg=dbg: BGS[sc[max(j for j, s0 in enumerate(M.STARTS) if s0 <= tg + 1e-6)].get('bg', dbg)](tg)
+        M.background = lambda tg, sc=sc, dbg=dbg: bg_img(sc[max(j for j, s0 in enumerate(M.STARTS) if s0 <= tg + 1e-6)]['img'], 0.3) if sc[max(j for j, s0 in enumerate(M.STARTS) if s0 <= tg + 1e-6)].get('img') else BGS[sc[max(j for j, s0 in enumerate(M.STARTS) if s0 <= tg + 1e-6)].get('bg', dbg)](tg)
         M.frame(int(sys.argv[3]), float(sys.argv[4])).save(sys.argv[5])
     else:
         build(sys.argv[1], sys.argv[2])

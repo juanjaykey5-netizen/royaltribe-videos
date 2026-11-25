@@ -1,0 +1,64 @@
+{
+ "estilo": "cinetico",
+ "theme": "royal",
+ "font": "fira",
+ "durs": [
+  4.5,
+  6.5,
+  6.5,
+  5.5
+ ],
+ "scenes": [
+  {
+   "type": "kin",
+   "img": "imagens/teste_caixa_correio.jpg",
+   "lines": [
+    "Chegou uma",
+    "carta de",
+    "cobrança?"
+   ],
+   "hl": [
+    2
+   ],
+   "logo": true
+  },
+  {
+   "type": "kin",
+   "img": "imagens/teste_caixa_correio.jpg",
+   "lines": [
+    "Você tem",
+    "30 dias",
+    "para contestar"
+   ],
+   "hl": [
+    1
+   ],
+   "sub": "por escrito, segundo o CFPB"
+  },
+  {
+   "type": "kin",
+   "img": "imagens/teste_mesa_calendario.jpg",
+   "lines": [
+    "Anote datas",
+    "e guarde",
+    "tudo"
+   ],
+   "hl": [
+    0
+   ]
+  },
+  {
+   "type": "kin",
+   "img": "imagens/teste_mesa_calendario.jpg",
+   "lines": [
+    "Mande",
+    "CONSULTORIA",
+    "no direct"
+   ],
+   "hl": [
+    1
+   ],
+   "ref": "Fonte: CFPB e FTC"
+  }
+ ]
+}
