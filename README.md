@@ -17,3 +17,6 @@ Exemplo de spec: `tools/spec_fundo_emergencia.json` (`durs` = duracao de cada li
 
 ## Conteudo biblico (segundo canal de videos)
 Mesmo gerador. Cena extra `verse` (title, lines = versiculo em linhas de ~24 caracteres, ref, foot = traducao). Modelo: `tools/spec_exemplo_biblico.json`. Use traducoes em dominio publico (Almeida Revista e Corrigida em PT, Reina-Valera 1909 em ES, KJV em EN).
+
+## Carrossel Instagram (dias impares)
+`python3 tools/make_carousel.py spec.json outdir` gera slide_01.jpg..N (1080x1350, JPEG) com logo Royal Signature fixa no canto superior esquerdo, conteudo centralizado entre y=230 e y=1090 (zona segura), tema/fonte/cores do dia (themes.py). Tipos: cover, alert, tip, list, compare, cta. Modelo: tools/spec_carrossel_exemplo.json; exemplo renderizado em carrosseis/exemplo/.
