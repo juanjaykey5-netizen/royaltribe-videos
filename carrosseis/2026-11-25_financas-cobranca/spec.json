@@ -1,0 +1,77 @@
+{
+ "theme": "oceano",
+ "handle": "@realstart.consultantofc",
+ "slides": [
+  {
+   "type": "cover",
+   "kicker": "ALERTA DE DÍVIDAS",
+   "l1": "Recebeu carta de cobrança?",
+   "hl": "Você tem 30 dias",
+   "sub": "Arraste e conheça seus direitos"
+  },
+  {
+   "type": "alert",
+   "tag": "ERRO 1",
+   "title": "Ignorar a carta de cobrança",
+   "body": [
+    "O cobrador deve enviar um aviso por escrito com o valor e o credor.",
+    "Você tem 30 dias para contestar a dívida por escrito."
+   ]
+  },
+  {
+   "type": "alert",
+   "tag": "ERRO 2",
+   "title": "Pagar sem pedir verificação",
+   "body": [
+    "Não reconhece a dívida? Peça a verificação por escrito.",
+    "Se pedir no prazo, a cobrança deve pausar até a resposta."
+   ]
+  },
+  {
+   "type": "alert",
+   "tag": "ERRO 3",
+   "title": "Achar que cobrador pode tudo",
+   "body": [
+    "Em geral, ligações só entre 8h e 21h.",
+    "Ele não pode ameaçar, mentir sobre o valor nem expor sua dívida."
+   ]
+  },
+  {
+   "type": "alert",
+   "tag": "CUIDADO",
+   "title": "Dívida antiga: pagamento parcial",
+   "body": [
+    "Em alguns estados, pagar qualquer valor ou prometer pagar pode reiniciar o prazo.",
+    "Antes de pagar, confirme as regras do seu estado."
+   ]
+  },
+  {
+   "type": "tip",
+   "n": "5",
+   "title": "Guarde tudo e denuncie abusos",
+   "body": [
+    "Guarde cartas, e-mails e anote datas de ligações.",
+    "Denuncie no CFPB, na FTC ou no procurador-geral do estado."
+   ]
+  },
+  {
+   "type": "list",
+   "title": "Checklist se um cobrador ligar",
+   "items": [
+    "Peça o aviso de validação por escrito",
+    "Anote datas e horários das ligações",
+    "Conteste por escrito em até 30 dias",
+    "Não passe dados bancários por telefone",
+    "Guarde cópia de tudo"
+   ]
+  },
+  {
+   "type": "cta",
+   "l1": "Quer organizar suas dívidas?",
+   "hl": "Fale com a gente",
+   "sub": "Consultoria para famílias brasileiras e hispânicas.",
+   "kw": "CONSULTORIA",
+   "disc": "Fontes: CFPB e FTC. Conteúdo educacional, não é aconselhamento financeiro ou jurídico."
+  }
+ ]
+}
