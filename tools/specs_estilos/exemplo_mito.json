@@ -1,0 +1,5 @@
+{"estilo": "mito", "theme": "oceano", "durs": [7.5, 7.5, 5.0], "brand": {"logo": "brand/aljava_transparente.png", "name": ""}, "scenes": [
+{"type": "mito", "myth": "Eva comeu uma maçã", "text": "tomou do seu fruto, e comeu", "ref": "Gênesis 3:6", "foot": "Almeida Revista e Corrigida"},
+{"type": "mito", "myth": "A Bíblia diz qual era o fruto", "text": "O texto não diz qual fruto era", "ref": "Gênesis 3:6", "foot": "Fonte: Rutgers Today, 2023"},
+{"type": "kin", "bg": "liso", "lines": ["Leia o texto", "com calma"], "hl": [1], "logo": true, "disc": ["Reflexão cristã, não substitui sua igreja local."]}
+]}

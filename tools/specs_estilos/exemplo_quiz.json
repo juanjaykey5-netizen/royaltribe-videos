@@ -1,0 +1,5 @@
+{"estilo": "quiz", "theme": "ameixa", "durs": [8.5, 7.0, 5.0], "brand": {"logo": "brand/aljava_transparente.png", "name": ""}, "scenes": [
+{"type": "quizq", "q": "Que fruto a Bíblia cita em Gênesis 3:6?", "opts": ["Maçã", "Figo", "Só diz “fruto”"]},
+{"type": "quizans", "q": "Que fruto a Bíblia cita em Gênesis 3:6?", "opts": ["Maçã", "Figo", "Só diz “fruto”"], "correct": 2, "text": "tomou do seu fruto, e comeu", "ref": "Gênesis 3:6 (ARC)"},
+{"type": "kin", "lines": ["Acertou?", "Salve e", "compartilhe"], "hl": [0], "size": 104, "logo": true}
+]}
