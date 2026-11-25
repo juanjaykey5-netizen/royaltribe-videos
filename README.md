@@ -14,3 +14,6 @@ Exemplo de spec: `tools/spec_fundo_emergencia.json` (`durs` = duracao de cada li
 - Ponha `"theme": "<tema>"` no spec do make_template.py e use `audio/music_<musica>.mp3` (raw GitHub) como music.audioUrl no vidiq_compose.
 - Thumbnail no mesmo tema: `python3 tools/thumb.py "L1" "DESTAQUE" "sub" thumbs/NOME.png <tema>`.
 - Novas trilhas: `python3 tools/music.py ESTILO audio/music_ESTILO.mp3 75`.
+
+## Conteudo biblico (segundo canal de videos)
+Mesmo gerador. Cena extra `verse` (title, lines = versiculo em linhas de ~24 caracteres, ref, foot = traducao). Modelo: `tools/spec_exemplo_biblico.json`. Use traducoes em dominio publico (Almeida Revista e Corrigida em PT, Reina-Valera 1909 em ES, KJV em EN).

@@ -9,7 +9,7 @@ sys.path.insert(0, HERE)
 import make as M
 from make import *
 import themes
-DESIGN = {'hook': 5.0, 'stat': 8.0, 'calc': 8.0, 'cards': 10.0, 'rule': 8.0, 'cta': 6.0}
+DESIGN = {'verse': 8.0, 'hook': 5.0, 'stat': 8.0, 'calc': 8.0, 'cards': 10.0, 'rule': 8.0, 'cta': 6.0}
 
 def pop(img, txt, y, size, col, t, t0, font='Poppins-Bold'):
     T(img, txt, W / 2, y, size, col, a=cl(pr(t, t0, 0.2)), scale=max(0.01, eob(pr(t, t0, 0.5))), font=font)
@@ -114,7 +114,20 @@ def cta(sp):
             T(img, ln, W / 2, 1350 + 50 * i, 32, MUTED, a=da, font='Poppins-Medium')
     return f
 
-TYPES = {'hook': hook, 'stat': stat, 'calc': calc, 'cards': cards, 'rule': rule, 'cta': cta}
+def verse(sp):
+    """title, lines (versiculo quebrado em linhas de ~24 caracteres, max 7), ref (ex.: Salmos 23:1), foot (versao/traducao)"""
+    def f(img, t):
+        T(img, sp['title'], W / 2, 300, 70, WHITE, a=eo3(pr(t, 0.1, 0.4)))
+        T(img, '\u201c', W / 2, 470, 200, GOLD, a=eo3(pr(t, 0.3, 0.4)))
+        n = len(sp['lines']); y0 = 640; step = 96
+        for i, ln in enumerate(sp['lines']):
+            T(img, ln, W / 2, y0 + i * step, 58, WHITE, a=eo3(pr(t, 0.8 + 0.6 * i, 0.45)), font='Poppins-Medium')
+        ya = y0 + n * step + 40
+        pop(img, sp['ref'], ya, 70, GOLD, t, 0.8 + 0.6 * n + 0.3)
+        T(img, sp['foot'], W / 2, ya + 100, 34, MUTED, a=eo3(pr(t, 0.8 + 0.6 * n + 1.0, 0.5)), font='Poppins-Medium')
+    return f
+
+TYPES = {'verse': verse, 'hook': hook, 'stat': stat, 'calc': calc, 'cards': cards, 'rule': rule, 'cta': cta}
 
 def apply_theme(spec):
     th = themes.THEMES[spec.get('theme', 'royal')]
