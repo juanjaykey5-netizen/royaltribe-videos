@@ -2,6 +2,7 @@
 uso:
   python3 tools/escolher_estilo.py fin|bib            -> imprime a escolha (nao grava)
   python3 tools/escolher_estilo.py registrar SISTEMA ESTILO FORMATO ASSUNTO COR FONTE VOZ MUSICA   -> grava no estilos_usados.md
+CARROSSEL: registrar com estilo 'carrossel-<variante>' (ex.: carrossel-capa-foto), voz '-' e musica '-'; ele conta na janela de cor e fonte (videos e carrosseis juntos), mas nao na de voz, musica e estilo de video.
 Regra (Juan): cor, fonte e musica nao repetem por 7 videos; voz (so 4 em PT) nao repete nos ultimos 3; estilo nos ultimos 3.
 Cada video usa spec com "theme": COR e "font": FONTE (sobrescreve a fonte do tema), voz = voiceId no vidiq_voiceover_generate, musica = audio/music_<MUSICA>.mp3."""
 import sys, os, random, datetime
@@ -33,9 +34,10 @@ def livre(pool, rows, col, n):
     m = min(ult.values()); return random.choice([x for x in cand if ult[x] == m])
 def escolher(sis):
     rows = ler(); random.seed(datetime.datetime.now().timestamp())
-    voz = livre(list(VOZES), rows, 'voz', JANELA_VOZ)
-    return dict(estilo=livre(ESTILOS, rows, 'estilo', 3), cor=livre(CORES[sis], rows, 'cor', JANELA),
-                fonte=livre(FONTES, rows, 'fonte', JANELA), voz=voz, voiceId=VOZES[voz], musica=livre(MUSICAS, rows, 'musica', JANELA))
+    vid = [r for r in rows if not r['estilo'].startswith('carrossel')]  # carrosseis nao tem voz/musica/estilo de video, mas contam em cor e fonte
+    voz = livre(list(VOZES), vid, 'voz', JANELA_VOZ)
+    return dict(estilo=livre(ESTILOS, vid, 'estilo', 3), cor=livre(CORES[sis], rows, 'cor', JANELA),
+                fonte=livre(FONTES, rows, 'fonte', JANELA), voz=voz, voiceId=VOZES[voz], musica=livre(MUSICAS, vid, 'musica', JANELA))
 if __name__ == '__main__':
     if sys.argv[1] == 'registrar':
         a = sys.argv[2:]; assert len(a) == 8, 'faltam campos'
