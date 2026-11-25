@@ -1,0 +1,9 @@
+{"theme":"grafite","handle":"@realstart.consultantofc","slides":[
+{"type":"cover","kicker":"ALERTA DE CRÉDITO","l1":"Seu score pode estar travado por","hl":"3 erros comuns","sub":"Arraste e veja como evitar"},
+{"type":"alert","tag":"ERRO 1","title":"Usar quase todo o limite do cartão","body":["O uso do crédito pesa cerca de 30% do score FICO.","Especialistas sugerem ficar abaixo de ~30% do limite. Quanto menor, melhor."]},
+{"type":"alert","tag":"ERRO 2","title":"Nunca olhar o seu relatório de crédito","body":["Você pode ver os 3 relatórios de graça toda semana em AnnualCreditReport.com.","É o único site autorizado. Cuidado com sites falsos."]},
+{"type":"alert","tag":"ERRO 3","title":"Atrasar contas ou pagar só o mínimo","body":["O histórico de pagamentos é o fator de maior peso no score FICO.","Pagar só o mínimo mantém o saldo e os juros por mais tempo."]},
+{"type":"list","title":"Checklist para começar hoje","items":["Pague as contas em dia","Mantenha o uso do cartão baixo","Confira seu relatório de crédito","Conteste erros que encontrar"]},
+{"type":"compare","title":"Sem plano x com plano","a":{"h":"Sem plano","items":["Contas esquecidas","Cartão no limite","Surpresas no score"]},"b":{"h":"Com plano","items":["Pagamentos em dia","Uso do cartão controlado","Relatório revisado"]}},
+{"type":"cta","l1":"Quer organizar suas finanças?","hl":"Fale com a gente","sub":"Consultoria para famílias brasileiras e hispânicas na Flórida.","kw":"CONSULTORIA","disc":"Fontes: Experian e FTC (consumer.ftc.gov). Conteúdo educacional. Não é aconselhamento financeiro, jurídico ou de investimento."}
+]}
