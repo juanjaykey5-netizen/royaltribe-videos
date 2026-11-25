@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Gera carrossel Instagram 1080x1350 (4:5) com identidade Royal Signature.
-Uso: python3 tools/make_carousel_fin.py spec.json outdir      -> outdir/slide_01.jpg ... (JPEG, pronto para vidIQ)
+Uso: python3 tools/make_carousel_fin.py spec.json outdir [ig|tiktok|both]      -> outdir/slide_01.jpg ... (JPEG, pronto para vidIQ)
 spec = {"theme": "royal|esmeralda|ameixa|grafite|oceano|por-do-sol", "handle": "@realstart.consultantofc", "slides": [...]}
 Tipos: cover(kicker,l1,hl,sub) alert(tag,title,body[],big?) tip(n,title,body[]) list(title,items[]) compare(title,a:{h,items[]},b:{h,items[]}) cta(l1,hl,sub,kw,disc)
 ZONA SEGURA: margens 110 px nos lados (o grid do perfil corta ~34 px de cada lado), topo 150 (contador 1/N) e base 170 (pontinhos).
@@ -10,9 +10,20 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import themes as TH
-W, H = 1080, 1350
-MX = 110                 # margem lateral
-TOP, BOT = 230, 260      # conteudo so entre y=TOP e y=H-BOT (logo em cima; pontinhos/@ embaixo)
+# Formatos: 'ig' = Instagram 4:5; 'tiktok' = TikTok 9:16 (fotos). Zonas seguras de cada um:
+# ig:     lateral 110 (grid do perfil corta ~34 px), conteudo y 230..1090, logo no topo, pontinhos/@ embaixo.
+# tiktok: lateral 170 (botoes a direita), conteudo y 260..1380 (topo: busca/abas; base ~540 px: legenda, @ e musica do TikTok).
+FORMATS = {
+    'ig':     dict(W=1080, H=1350, MX=110, TOP=230, BOT=260, LOGO_Y=52,  LOGO_H=140, DOTS_Y=1145, ARROW_Y=1200, HANDLE_Y=1200, LINE_Y=1108),
+    'tiktok': dict(W=1080, H=1920, MX=170, TOP=260, BOT=540, LOGO_Y=170, LOGO_H=150, DOTS_Y=1425, ARROW_Y=1470, HANDLE_Y=None, LINE_Y=1395),
+}
+W, H, MX, TOP, BOT = 1080, 1350, 110, 230, 260
+LOGO_Y, LOGO_H, DOTS_Y, ARROW_Y, HANDLE_Y, LINE_Y = 52, 140, 1145, 1200, 1200, 1108
+def use_format(name):
+    global W, H, MX, TOP, BOT, LOGO_Y, LOGO_H, DOTS_Y, ARROW_Y, HANDLE_Y, LINE_Y
+    f = FORMATS[name]
+    W, H, MX, TOP, BOT = f['W'], f['H'], f['MX'], f['TOP'], f['BOT']
+    LOGO_Y, LOGO_H, DOTS_Y, ARROW_Y, HANDLE_Y, LINE_Y = f['LOGO_Y'], f['LOGO_H'], f['DOTS_Y'], f['ARROW_Y'], f['HANDLE_Y'], f['LINE_Y']
 LOGO = os.path.join(HERE, '..', 'brand', 'royal_signature_transparente.png')
 WHITE = (255, 255, 255); MUTED = (190, 202, 224); RED = (255, 92, 92)
 _fc = {}
@@ -54,24 +65,24 @@ def bg_wide(c, n):
     img = col.resize((WW, H)).convert('RGBA')
     glow = Image.new('RGBA', (WW, H), (0, 0, 0, 0)); g = ImageDraw.Draw(glow)
     for k in range(n + 1):                                   # brilhos que cruzam cada emenda
-        x = k * W; y = 330 if k % 2 == 0 else 980; r = 360 + 60 * (k % 3)
+        x = k * W; y = int((0.245 if k % 2 == 0 else 0.726) * H); r = 360 + 60 * (k % 3)
         g.ellipse([x - r, y - r, x + r, y + r], fill=(c.a2 if k % 2 == 0 else c.a1) + (40,))
     for k in range(n):
         if k % 2 == 1:
-            x = k * W + W // 2; g.ellipse([x - 300, 260, x + 300, 860], fill=c.a2 + (22,))
+            x = k * W + W // 2; g.ellipse([x - 300, int(.19 * H), x + 300, int(.64 * H)], fill=c.a2 + (22,))
     img = Image.alpha_composite(img, glow.filter(ImageFilter.GaussianBlur(110)))
     ln = Image.new('RGBA', (WW, H), (0, 0, 0, 0)); d = ImageDraw.Draw(ln)
     for k in range(1, n):                                    # aneis que atravessam as emendas
-        x = k * W; y = 420 if k % 2 else 860; r = 230 + 40 * (k % 2)
+        x = k * W; y = int((0.31 if k % 2 else 0.637) * H); r = 230 + 40 * (k % 2)
         d.ellipse([x - r, y - r, x + r, y + r], outline=c.a1 + (70,), width=6)
         d.ellipse([x - r + 70, y - r + 70, x + r - 70, y + r - 70], outline=(255, 255, 255, 34), width=3)
-    pts = [(x, 1108 + 14 * math.sin(x / 170.0)) for x in range(0, WW + 1, 8)]   # linha continua pelo carrossel todo
+    pts = [(x, LINE_Y + 14 * math.sin(x / 170.0)) for x in range(0, WW + 1, 8)]   # linha continua pelo carrossel todo
     d.line(pts, fill=c.a1 + (210,), width=5, joint='curve')
     for k in range(1, n):                                    # nos da linha nas emendas
-        x = k * W; y = 1108 + 14 * math.sin(x / 170.0)
+        x = k * W; y = LINE_Y + 14 * math.sin(x / 170.0)
         d.ellipse([x - 16, y - 16, x + 16, y + 16], fill=c.a1 + (255,)); d.ellipse([x - 7, y - 7, x + 7, y + 7], fill=c.bg0 + (255,))
     for j in (-70, 0, 70):                                   # setas que cruzam da capa para o slide 2
-        x = W + j; y = 720
+        x = W + j; y = (TOP + H - BOT) // 2 + 60
         d.line([x - 18, y - 34, x + 14, y, x - 18, y + 34], fill=c.a1 + (230,), width=9, joint='curve')
     return Image.alpha_composite(img, ln.filter(ImageFilter.GaussianBlur(0.8)))
 def wrap(d, txt, f, maxw):
@@ -100,15 +111,15 @@ def block(d, ls, f, x, y, fill, lh, anchor='la'):
     return y
 def chrome(img, c, i, n, handle):
     d = ImageDraw.Draw(img)
-    lg = Image.open(LOGO).convert('RGBA'); h = 140; lg = lg.resize((int(lg.width * h / lg.height), h), Image.LANCZOS)
-    img.alpha_composite(lg, (MX, 52))                             # logo sempre no mesmo lugar (canto sup. esquerdo)
+    lg = Image.open(LOGO).convert('RGBA'); h = LOGO_H; lg = lg.resize((int(lg.width * h / lg.height), h), Image.LANCZOS)
+    img.alpha_composite(lg, (MX, LOGO_Y))                             # logo sempre no mesmo lugar (canto sup. esquerdo)
     for k in range(n):                                            # pontinhos (acima da zona do indicador do IG)
         cx = W // 2 + (k - (n - 1) / 2) * 30
-        d.ellipse([cx - 7, H - 205, cx + 7, H - 191], fill=c.a1 if k == i else (255, 255, 255, 70))
-    text(d, (W // 2, H - 150), handle, c.R(30), MUTED, 'mm', False)
+        d.ellipse([cx - 7, DOTS_Y - 7, cx + 7, DOTS_Y + 7], fill=c.a1 if k == i else (255, 255, 255, 70))
+    if HANDLE_Y: text(d, (W // 2, HANDLE_Y), handle, c.R(30), MUTED, 'mm', False)
     if i < n - 1:
-        text(d, (W - MX - 44, H - 150), 'arraste', c.R(28), c.a1, 'rm', False)
-        x = W - MX - 24; y = H - 150
+        text(d, (W - MX - 44, ARROW_Y), 'arraste', c.R(28), c.a1, 'rm', False)
+        x = W - MX - 24; y = ARROW_Y
         d.line([x - 12, y - 11, x, y, x - 12, y + 11], fill=c.a1, width=5, joint='curve')
 def cover(img, c, s, i, n, handle):
     d = ImageDraw.Draw(img); mw = W - 2 * MX
@@ -180,7 +191,8 @@ def cta(img, c, s, i, n, handle):
     if s.get('disc'):
         sz, ls = fit(d, s['disc'], c.R, 26, mw, 4, 22); block(d, ls, c.R(sz), MX, y, MUTED, int(sz * 1.35))
 KINDS = {'cover': cover, 'alert': alert, 'tip': tip, 'list': lst, 'compare': compare, 'cta': cta}
-def build(spec_path, outdir):
+def build(spec_path, outdir, fmt='ig'):
+    use_format(fmt)
     spec = json.load(open(spec_path)); os.makedirs(outdir, exist_ok=True)
     c = Ctx(spec.get('theme', 'royal')); handle = spec.get('handle', '@realstart.consultantofc'); sl = spec['slides']; n = len(sl)
     outs = []
@@ -201,4 +213,9 @@ def build(spec_path, outdir):
         p = os.path.join(outdir, 'slide_%02d.jpg' % (i + 1)); img.convert('RGB').save(p, quality=92, subsampling=0); outs.append(p)
     return outs
 if __name__ == '__main__':
-    for p in build(sys.argv[1], sys.argv[2]): print(p)
+    fmt = sys.argv[3] if len(sys.argv) > 3 else 'ig'          # ig | tiktok | both (both: ig em outdir, tiktok em outdir/tiktok)
+    if fmt == 'both':
+        for p in build(sys.argv[1], sys.argv[2], 'ig'): print(p)
+        for p in build(sys.argv[1], os.path.join(sys.argv[2], 'tiktok'), 'tiktok'): print(p)
+    else:
+        for p in build(sys.argv[1], sys.argv[2], fmt): print(p)

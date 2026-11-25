@@ -20,3 +20,6 @@ Mesmo gerador. Cena extra `verse` (title, lines = versiculo em linhas de ~24 car
 
 ## Carrossel Instagram (dias impares)
 `python3 tools/make_carousel_fin.py spec.json outdir` (carrossel de FINANCAS; o make_carousel.py e o gerador do Aljava GC, nao misturar) gera slide_01.jpg..N (1080x1350, JPEG), com fundo continuo entre os slides (aneis, brilhos, linha e setas atravessam as emendas; "continuo": false desliga), com logo Royal Signature fixa no canto superior esquerdo, conteudo centralizado entre y=230 e y=1090 (zona segura), tema/fonte/cores do dia (themes.py). Tipos: cover, alert, tip, list, compare, cta. Modelo: tools/spec_carrossel_exemplo.json; exemplo renderizado em carrosseis/exemplo/.
+
+### Carrossel de financas no TikTok (fotos 9:16)
+`python3 tools/make_carousel_fin.py spec.json outdir both` gera o Instagram (4:5) em outdir/ e o TikTok (1080x1920) em outdir/tiktok/. Zona segura do TikTok: laterais 170 px, conteudo entre y=260 e y=1380 (topo: abas/busca; base ~540 px: legenda, @ e musica do TikTok). Posta via vidIQ como post de fotos (destino TIKTOK, media = imagens de outdir/tiktok, autoAddMusic true).
