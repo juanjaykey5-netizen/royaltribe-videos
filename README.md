@@ -23,3 +23,6 @@ Mesmo gerador. Cena extra `verse` (title, lines = versiculo em linhas de ~24 car
 
 ### Carrossel de financas no TikTok (fotos 9:16)
 `python3 tools/make_carousel_fin.py spec.json outdir both` gera o Instagram (4:5) em outdir/ e o TikTok (1080x1920) em outdir/tiktok/. Zona segura do TikTok: laterais 170 px, conteudo entre y=260 e y=1380 (topo: abas/busca; base ~540 px: legenda, @ e musica do TikTok). Posta via vidIQ como post de fotos (destino TIKTOK, media = imagens de outdir/tiktok, autoAddMusic true).
+
+## Nao repetir (regra do Juan)
+Cor, fonte, voz e musica nao repetem por pelo menos 7 videos seguidos (financas + biblia juntos); estilo nao repete nos ultimos 3. `python3 tools/escolher_estilo.py fin|bib` sorteia o que esta livre (pools: 9 cores, 10 fontes, 9 musicas, 8 vozes) e `... registrar` grava em tools/estilos_usados.md. No spec use `"theme"` (cor) e `"font"` (fonte, sobrescreve a do tema); musica = audio/music_<nome>.mp3.

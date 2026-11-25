@@ -8,6 +8,10 @@ FONTS = {
     'merriweather': (ROOT + '/fonts/merriweather-latin-700-normal.woff', ROOT + '/fonts/merriweather-latin-400-normal.woff'),
     'oswald':    (ROOT + '/fonts/oswald-latin-700-normal.woff', ROOT + '/fonts/oswald-latin-500-normal.woff'),
     'dmsans':    (ROOT + '/fonts/dm-sans-latin-700-normal.woff', ROOT + '/fonts/dm-sans-latin-500-normal.woff'),
+    'fira':      (ROOT + '/fonts/FiraSans-Bold.ttf', ROOT + '/fonts/FiraSans-Medium.ttf'),
+    'crimson':   (ROOT + '/fonts/CrimsonText-Bold.ttf', ROOT + '/fonts/CrimsonText-SemiBold.ttf'),
+    'anton':     (ROOT + '/fonts/Anton-Regular.ttf', ROOT + '/fonts/Anton-Regular.ttf'),
+    'archivo':   (ROOT + '/fonts/ArchivoBlack-Regular.ttf', ROOT + '/fonts/FiraSans-Medium.ttf'),
 }
 # bg0 (topo), bg1 (base), a1 (destaque 1), a2 (destaque 2), blobs RGBA
 THEMES = {
@@ -22,7 +26,7 @@ THEMES = {
     'menta':    dict(font='dmsans',     bg0=(6, 38, 40),  bg1=(34, 140, 126), a1=(255, 224, 140), a2=(190, 255, 230)),
     'por-do-sol': dict(font='dmsans',   bg0=(38, 12, 24), bg1=(112, 42, 52), a1=(255, 180, 70),  a2=(255, 124, 104)),
 }
-MUSICS = ['lofi', 'bright', 'calm', 'groove', 'warm']
+MUSICS = ['lofi', 'bright', 'calm', 'groove', 'warm', 'jazz', 'drive', 'dream', 'pulse']
 ROTATION = ['royal', 'esmeralda', 'ameixa', 'grafite', 'oceano', 'por-do-sol']  # financas (nao mudar)
 BIBLIA_ROTATION = ['lavanda', 'rosa-fofo', 'menta', 'oceano', 'por-do-sol', 'ameixa', 'esmeralda', 'royal']
 def pick_biblia(ordinal):

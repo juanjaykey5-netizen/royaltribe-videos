@@ -142,7 +142,7 @@ def apply_theme(spec):
         M.LOGO_PATH = os.path.join(M.HERE, '..', br['logo']); M._logo.cache_clear(); BRAND_NAME = br.get('name', '')
 
     th = themes.THEMES[spec.get('theme', 'royal')]
-    fb, fm = themes.FONTS[th['font']]
+    fb, fm = themes.FONTS[spec.get('font', th['font'])]  # 'font' no spec sobrescreve a fonte do tema
     M.FONTMAP.update({'Poppins-Bold': fb, 'Poppins-Medium': fm})
     M.BG0, M.BG1 = th['bg0'], th['bg1']
     M.BLOBS = [tuple(min(255, c + 60) for c in th['bg1']) + (90,), th['a2'] + (38,), th['a1'] + (30,), tuple(min(255, c + 40) for c in th['bg1']) + (70,)]
