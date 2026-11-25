@@ -57,6 +57,20 @@ def background(tg):
     return im.resize((W, H), Image.BILINEAR)
 
 
+
+def _over(img, layer, pos):
+    """Alpha-composite RGBA layer onto RGBA/RGB img at pos, clipped to the canvas."""
+    x, y = int(pos[0]), int(pos[1])
+    x0, y0 = max(0, x), max(0, y)
+    x1, y1 = min(img.width, x + layer.width), min(img.height, y + layer.height)
+    if x1 <= x0 or y1 <= y0:
+        return
+    part = layer.crop((x0 - x, y0 - y, x1 - x, y1 - y))
+    box = (x0, y0, x1, y1)
+    base = img.crop(box).convert('RGBA')
+    img.paste(Image.alpha_composite(base, part).convert(img.mode), (x0, y0))
+
+
 def T(img, txt, x, y, size, fill=WHITE, a=1.0, font='Poppins-Bold', anchor='mm', scale=1.0, shadow=True):
     a = a * G
     if a <= 0.01 or scale <= 0.01:
@@ -71,7 +85,7 @@ def T(img, txt, x, y, size, fill=WHITE, a=1.0, font='Poppins-Bold', anchor='mm',
     if shadow:
         d.text((ox + 3, oy + 5), txt, font=f, anchor=anchor, fill=(0, 0, 0, int(110 * a)))
     d.text((ox, oy), txt, font=f, anchor=anchor, fill=tuple(fill) + (int(255 * a),))
-    img.paste(layer, (int(x - ox), int(y - oy)), layer)
+    _over(img, layer, (int(x - ox), int(y - oy)))
 
 
 def RR(img, box, r, fill, a=1.0, outline=None, width=0):
@@ -85,7 +99,7 @@ def RR(img, box, r, fill, a=1.0, outline=None, width=0):
     f = None if fill is None else tuple(fill[:3]) + (int((fill[3] if len(fill) > 3 else 255) * a),)
     o = None if outline is None else tuple(outline[:3]) + (int(255 * a),)
     d.rounded_rectangle([pad, pad, pad + x1 - x0, pad + y1 - y0], radius=r, fill=f, outline=o, width=width)
-    img.paste(layer, (x0 - pad, y0 - pad), layer)
+    _over(img, layer, (x0 - pad, y0 - pad))
 
 
 def circle(img, cx, cy, r, fill, a=1.0, outline=None, width=0):
@@ -99,7 +113,7 @@ def circle(img, cx, cy, r, fill, a=1.0, outline=None, width=0):
     f = None if fill is None else tuple(fill[:3]) + (int(255 * a),)
     o = None if outline is None else tuple(outline[:3]) + (int(255 * a),)
     d.ellipse([pad, pad, pad + 2 * r, pad + 2 * r], fill=f, outline=o, width=width)
-    img.paste(layer, (int(cx - r - pad), int(cy - r - pad)), layer)
+    _over(img, layer, (int(cx - r - pad), int(cy - r - pad)))
 
 
 LOGO_PATH = '/home/claude/vid/brand/royal_signature_transparente.png'
@@ -115,13 +129,13 @@ def _logo(h):
 def logo(img, x, top, h, a=1.0, center=False):
     a = a * G
     if a <= 0.01:
-        return
+        return _logo(int(h)).width
     lg = _logo(int(h))
     if a < 0.999:
         al = lg.getchannel('A').point(lambda v: int(v * a))
         lg = lg.copy(); lg.putalpha(al)
     px = int(x - lg.width / 2) if center else int(x)
-    img.paste(lg, (px, int(top)), lg)
+    _over(img, lg, (px, int(top)))
     return lg.width
 
 
@@ -143,13 +157,16 @@ def check(img, cx, cy, size, p, color=DARK, w=10):
 
 def scene1(img, t):
     d = DURS[0]
-    T(img, 'Chegou nos EUA', W / 2, 360, 86, WHITE, a=eo3(pr(t, 0.1, 0.4)))
-    T(img, 'e o seu crédito é', W / 2, 470, 86, WHITE, a=eo3(pr(t, 0.4, 0.4)))
+    la = eo3(pr(t, 0.0, 0.4))
+    lw = logo(img, 60, 245, 92, a=la)
+    T(img, 'ROYAL SIGNATURE', 60 + lw + 20, 291, 32, LIGHT, a=0.95 * la, anchor='lm', font='Poppins-Bold')
+    T(img, 'Chegou nos EUA', W / 2, 440, 86, WHITE, a=eo3(pr(t, 0.1, 0.4)))
+    T(img, 'e o seu crédito é', W / 2, 550, 86, WHITE, a=eo3(pr(t, 0.4, 0.4)))
     s = eob(pr(t, 0.9, 0.55))
-    T(img, 'ZERO?', W / 2, 650, 210, GOLD, a=cl(pr(t, 0.9, 0.2)), scale=max(0.01, s))
+    T(img, 'ZERO?', W / 2, 730, 210, GOLD, a=cl(pr(t, 0.9, 0.2)), scale=max(0.01, s))
     # card
     slide = eo3(pr(t, 1.5, 0.7))
-    cy = 1120 + (1 - slide) * 700 + 14 * math.sin(t * 2.2)
+    cy = 1170 + (1 - slide) * 700 + 14 * math.sin(t * 2.2)
     ang = -8 + 3 * math.sin(t * 1.6)
     cw, ch = 720, 450
     layer = Image.new('RGBA', (cw + 40, ch + 40), (0, 0, 0, 0))
@@ -164,9 +181,10 @@ def scene1(img, t):
     ld.text((20 + cw - 50, 420 - 20), 'sem histórico', font=F('Poppins-Medium', 32), fill=(120, 80, 0, 255), anchor='rm')
     layer = layer.rotate(ang, resample=Image.BICUBIC, expand=True)
     al = layer.getchannel('A').point(lambda v: int(v * G * cl(pr(t, 1.5, 0.3))))
-    img.paste(layer, (int(W / 2 - layer.width / 2), int(cy - layer.height / 2)), al)
-    T(img, 'Histórico de crédito de outro país', W / 2, 1480, 42, MUTED, a=eo3(pr(t, 2.8, 0.5)), font='Poppins-Medium')
-    T(img, 'geralmente não vale aqui', W / 2, 1535, 42, MUTED, a=eo3(pr(t, 3.0, 0.5)), font='Poppins-Medium')
+    layer.putalpha(al)
+    _over(img, layer, (int(W / 2 - layer.width / 2), int(cy - layer.height / 2)))
+    T(img, 'Histórico de crédito de outro país', W / 2, 1520, 42, MUTED, a=eo3(pr(t, 2.8, 0.5)), font='Poppins-Medium')
+    T(img, 'geralmente não vale aqui', W / 2, 1572, 42, MUTED, a=eo3(pr(t, 3.0, 0.5)), font='Poppins-Medium')
 
 
 def scene2(img, t):
@@ -186,7 +204,7 @@ def scene2(img, t):
         wfill = 880 * (pct / 40.0) * p
         if wfill > 8:
             RR(img, (100, y + 40, 100 + wfill, y + 82), 21, col + (255,), a=a)
-    T(img, 'Pesos aproximados do FICO  |  Fonte: myFICO', W / 2, 1450, 30, MUTED, a=eo3(pr(t, 5.0, 0.5)), font='Poppins-Medium')
+    T(img, 'Pesos aproximados do FICO  |  Fonte: myFICO', W / 2, 1450, 36, MUTED, a=eo3(pr(t, 5.0, 0.5)), font='Poppins-Medium')
 
 
 def scene3(img, t):
@@ -204,7 +222,7 @@ def scene3(img, t):
         if t > ti:
             circle(img, cx, 770, 42, TEAL, a=1.0)
             check(img, cx, 770, 40, pr(t, ti, 0.25), w=8)
-    T(img, 'mês pago em dia', W / 2, 860, 34, MUTED, a=eo3(pr(t, 3.4, 0.4)), font='Poppins-Medium')
+    T(img, 'mês pago em dia', W / 2, 860, 40, MUTED, a=eo3(pr(t, 3.4, 0.4)), font='Poppins-Medium')
     # block B
     b = eo3(pr(t, 3.2, 0.4))
     pb = eo3(pr(t, 3.2, 0.8))
@@ -220,9 +238,9 @@ def scene3(img, t):
     d = ImageDraw.Draw(img)
     if b * G > 0.5:
         d.line([(mx, gy - 14), (mx, gy + 74)], fill=GOLD, width=6)
-    T(img, 'limite 30%', mx, gy - 40, 32, GOLD, a=b, font='Poppins-Bold')
-    T(img, 'ex.: 22% do limite usado', 100, gy + 110, 34, TEAL, a=eo3(pr(t, 4.6, 0.4)), anchor='lm', font='Poppins-Bold')
-    T(img, 'Meta: ficar abaixo de 30% (CFPB)', W / 2, 1480, 38, WHITE, a=eo3(pr(t, 5.4, 0.5)), font='Poppins-Medium')
+    T(img, 'limite 30%', mx, gy - 40, 38, GOLD, a=b, font='Poppins-Bold')
+    T(img, 'ex.: 22% do limite usado', 100, gy + 110, 40, TEAL, a=eo3(pr(t, 4.6, 0.4)), anchor='lm', font='Poppins-Bold')
+    T(img, 'Meta: ficar abaixo de 30% (CFPB)', W / 2, 1500, 42, WHITE, a=eo3(pr(t, 5.4, 0.5)), font='Poppins-Medium')
 
 
 def scene4(img, t):
@@ -245,8 +263,8 @@ def scene4(img, t):
         circle(img, x0 + 100, y0 + 125, 52, GOLD, a=a)
         T(img, n, x0 + 100, y0 + 122, 60, DARK, a=a, shadow=False)
         T(img, ti, x0 + 185, y0 + 62, 46, WHITE, a=a, anchor='lm')
-        T(img, l1, x0 + 185, y0 + 140, 31, MUTED, a=a, anchor='lm', font='Poppins-Medium')
-        T(img, l2, x0 + 185, y0 + 190, 31, MUTED, a=a, anchor='lm', font='Poppins-Medium')
+        T(img, l1, x0 + 185, y0 + 140, 34, MUTED, a=a, anchor='lm', font='Poppins-Medium')
+        T(img, l2, x0 + 185, y0 + 190, 34, MUTED, a=a, anchor='lm', font='Poppins-Medium')
     nb = eo3(pr(t, 8.4, 0.5))
     RR(img, (90, 1400, 990, 1500), 50, None, a=nb, outline=TEAL, width=4)
     T(img, 'Sem SSN? Alguns emissores aceitam ITIN.', W / 2, 1450, 36, TEAL, a=nb, font='Poppins-Bold')
@@ -260,7 +278,7 @@ def scene5(img, t):
     w = eo3(pr(t, 3.2, 0.5))
     RR(img, (80, 1130, 1000, 1360), 36, (255, 110, 110, 40), a=w, outline=RED, width=4)
     T(img, 'Atenção: cartão tem juros e taxas.', W / 2, 1210, 40, RED, a=w, font='Poppins-Bold')
-    T(img, 'Sempre que puder, pague a fatura inteira.', W / 2, 1290, 33, WHITE, a=w, font='Poppins-Medium')
+    T(img, 'Sempre que puder, pague a fatura inteira.', W / 2, 1290, 36, WHITE, a=w, font='Poppins-Medium')
 
 
 def scene6(img, t):
@@ -271,12 +289,21 @@ def scene6(img, t):
     logo(img, W / 2, 800 + (1 - la) * 40, 400, a=la, center=True)
     T(img, 'ROYAL SIGNATURE', W / 2, 1250, 46, LIGHT, a=eo3(pr(t, 2.0, 0.5)), font='Poppins-Bold')
     da = eo3(pr(t, 2.8, 0.5))
-    T(img, 'Conteúdo educacional. Não é aconselhamento financeiro.', W / 2, 1350, 29, MUTED, a=da, font='Poppins-Medium')
-    T(img, 'Cartões e empréstimos têm juros, taxas e riscos.', W / 2, 1396, 29, MUTED, a=da, font='Poppins-Medium')
-    T(img, 'Fontes: myFICO, CFPB, Experian, Capital One', W / 2, 1442, 29, MUTED, a=da, font='Poppins-Medium')
+    T(img, 'Conteúdo educacional. Não é aconselhamento financeiro.', W / 2, 1350, 32, MUTED, a=da, font='Poppins-Medium')
+    T(img, 'Cartões e empréstimos têm juros, taxas e riscos.', W / 2, 1400, 32, MUTED, a=da, font='Poppins-Medium')
+    T(img, 'Fontes: myFICO, CFPB, Experian, Capital One', W / 2, 1450, 32, MUTED, a=da, font='Poppins-Medium')
 
 
 SCENES = [scene1, scene2, scene3, scene4, scene5, scene6]
+
+
+# Safe zone (social UI): content lives in the SRC band and is scaled into the DST area.
+# Keeps clear: top ~290 px (status bar / search / header), bottom ~540 px (username, caption,
+# progress bar), right ~190 px (like/comment/share buttons), left ~110 px.
+SRC_Y0, SRC_Y1 = 235, 1600
+SAFE_K = 0.795
+DST_Y0 = 300
+DST_CX = 500
 
 
 def frame(si, t):
@@ -286,16 +313,12 @@ def frame(si, t):
     G = max(0.0, G)
     tg = STARTS[si] + t
     img = background(tg)
-    # brand tag + progress
-    G_save = G
-    G = 1.0
-    lw = logo(img, 60, 34, 116)
-    T(img, 'ROYAL SIGNATURE', 60 + lw + 20, 92, 30, LIGHT, a=0.95, anchor='lm', font='Poppins-Bold')
-    dr = ImageDraw.Draw(img)
-    dr.rounded_rectangle([60, 172, 60 + 960, 180], radius=4, fill=(60, 80, 130))
-    dr.rounded_rectangle([60, 172, 60 + max(8, 960 * tg / TOTAL), 180], radius=4, fill=(181, 150, 104))
-    G = G_save
-    SCENES[si](img, t)
+    layer = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    SCENES[si](layer, t)
+    band = layer.crop((0, SRC_Y0, W, SRC_Y1))
+    bw, bh = int(band.width * SAFE_K), int(band.height * SAFE_K)
+    band = band.resize((bw, bh), Image.LANCZOS)
+    _over(img, band, (int(DST_CX - bw / 2), DST_Y0))
     return img
 
 
