@@ -11,7 +11,13 @@ MUTED = (170, 186, 214)
 RED = (255, 110, 110)
 DARK = (8, 20, 48)
 
-DURS = [4.5, 7.5, 7.0, 10.6, 7.8, 5.0]
+OLD_DURS = [4.5, 7.5, 7.0, 10.6, 7.8, 5.0]   # tempos em que as animacoes das cenas foram desenhadas
+DURS = list(OLD_DURS)
+_tj = os.environ.get('TIMING_JSON', '/home/claude/vid/timing.json')
+if os.path.exists(_tj):
+    import json as _json
+    DURS = _json.load(open(_tj))['durs']
+SPEED = [o / d for o, d in zip(OLD_DURS, DURS)]  # acelera a animacao junto com a cena mais curta
 STARTS = [sum(DURS[:i]) for i in range(len(DURS))]
 TOTAL = sum(DURS)
 
@@ -314,7 +320,7 @@ def frame(si, t):
     tg = STARTS[si] + t
     img = background(tg)
     layer = Image.new('RGBA', (W, H), (0, 0, 0, 0))
-    SCENES[si](layer, t)
+    SCENES[si](layer, t * SPEED[si])
     band = layer.crop((0, SRC_Y0, W, SRC_Y1))
     bw, bh = int(band.width * SAFE_K), int(band.height * SAFE_K)
     band = band.resize((bw, bh), Image.LANCZOS)

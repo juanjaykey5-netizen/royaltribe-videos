@@ -11,3 +11,11 @@ No make.py as cenas são desenhadas numa camada transparente de 1080x1920 e `fra
 y=235..1600 por SAFE_K=0.795 para dentro da zona segura. Ao criar cenas novas, mantenha o conteúdo
 entre y=250 e y=1580 e no mínimo 34 px de fonte (fica ~27 px depois da redução).
 Sem barra de progresso desenhada no vídeo. Logo no início (cena 1) e grande no fim (CTA).
+
+## Ritmo (sem silêncio morto)
+A voz NÃO é acelerada. `trim_narr.py` corta só silêncio: sobra de 0,10 s antes e 0,22 s depois de cada fala
+(0,5 s no último fecho) e pausas internas acima de 0,14 s viram 0,14 s. Ele grava `timing.json` com a duração
+de cada cena; o `make.py` lê esse arquivo (variável TIMING_JSON) e acelera as animações da cena junto (SPEED).
+Fluxo: `python3 trim_narr.py narracao.mp3 cuts.json audio/narracao_curta.wav timing.json`, renderizar as cenas,
+juntar e `python3 mix.py audio/narracao_curta.wav audio/musica.mp3 silent.mp4 saida.mp4 timing.json`.
+No vídeo "Crédito do zero": 42,4 s -> 38,1 s.
