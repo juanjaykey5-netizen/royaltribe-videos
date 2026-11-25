@@ -9,6 +9,7 @@ sys.path.insert(0, HERE)
 import make as M
 from make import *
 import themes
+import art as ART
 DESIGN = {'verse': 8.0, 'hook': 5.0, 'stat': 8.0, 'calc': 8.0, 'cards': 10.0, 'rule': 8.0, 'cta': 6.0}
 
 def pop(img, txt, y, size, col, t, t0, font='Poppins-Bold'):
@@ -155,7 +156,17 @@ def build(spec_path, outdir):
     M.OLD_DURS = old; M.DURS = durs
     M.SPEED = [o / d for o, d in zip(old, durs)]
     M.STARTS = [sum(durs[:i]) for i in range(len(durs))]; M.TOTAL = sum(durs)
-    M.SCENES = [TYPES[s['type']](s) for s in scenes]
+    def with_art(f, kind, cy, size):
+        def g(img, t):
+            f(img, t)
+            p = eob(pr(t, 0.6, 0.6)); al = eo3(pr(t, 0.6, 0.4))
+            if al <= 0.01: return
+            sz = max(8, int(size * max(0.05, p))); im = ART.draw(kind, sz)
+            if al * M.G < 0.999: im.putalpha(im.getchannel('A').point(lambda v: int(v * al * M.G)))
+            bob = math.sin(t * 2.4) * 14
+            M._over(img, im, (int(W / 2 - sz / 2), int(cy - sz / 2 + bob)))
+        return g
+    M.SCENES = [(with_art(TYPES[s['type']](s), s['art'], s.get('arty', 1280), s.get('artsize', 340)) if s.get('art') else TYPES[s['type']](s)) for s in scenes]
     M.SRC_Y0 = 235
     def one(i):
         M.render(i, os.path.join(outdir, f's{i+1}.mp4'))

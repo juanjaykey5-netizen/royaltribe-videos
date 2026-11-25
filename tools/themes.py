@@ -17,9 +17,16 @@ THEMES = {
     'grafite':  dict(font='oswald',     bg0=(10, 12, 16), bg1=(40, 44, 56),  a1=(255, 98, 64),   a2=(255, 212, 0)),
     'oceano':   dict(font='merriweather',   bg0=(3, 26, 52),  bg1=(0, 92, 122),  a1=(255, 218, 160), a2=(92, 224, 232)),
     'aljava':   dict(font='merriweather', bg0=(22, 12, 8),  bg1=(96, 56, 30),  a1=(240, 184, 96),  a2=(247, 238, 220)),
+    'rosa-fofo': dict(font='nunito',    bg0=(46, 12, 40), bg1=(158, 64, 126), a1=(255, 214, 120), a2=(255, 190, 220)),
+    'lavanda':  dict(font='montserrat', bg0=(22, 16, 58), bg1=(100, 82, 176), a1=(255, 222, 130), a2=(190, 220, 255)),
+    'menta':    dict(font='dmsans',     bg0=(6, 38, 40),  bg1=(34, 140, 126), a1=(255, 224, 140), a2=(190, 255, 230)),
     'por-do-sol': dict(font='dmsans',   bg0=(38, 12, 24), bg1=(112, 42, 52), a1=(255, 180, 70),  a2=(255, 124, 104)),
 }
 MUSICS = ['lofi', 'bright', 'calm', 'groove', 'warm']
+ROTATION = ['royal', 'esmeralda', 'ameixa', 'grafite', 'oceano', 'por-do-sol']  # financas (nao mudar)
+BIBLIA_ROTATION = ['lavanda', 'rosa-fofo', 'menta', 'oceano', 'por-do-sol', 'ameixa', 'esmeralda', 'royal']
+def pick_biblia(ordinal):
+    return BIBLIA_ROTATION[ordinal % len(BIBLIA_ROTATION)], MUSICS[(ordinal * 2 + ordinal // 5) % len(MUSICS)]
 def pick(ordinal):
-    names = list(THEMES)
+    names = ROTATION
     return names[ordinal % len(names)], MUSICS[(ordinal * 2 + ordinal // 5) % len(MUSICS)]
