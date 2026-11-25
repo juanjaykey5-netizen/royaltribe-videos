@@ -19,7 +19,7 @@ def font(path, size):
 class Ctx:
     def __init__(s, spec):
         th = themes.THEMES[spec.get('theme', 'lavanda')]; s.th = th
-        s.bold, s.med = themes.FONTS[th['font']]
+        s.bold, s.med = themes.FONTS[spec['font'] if spec.get('font') in themes.FONTS else th['font']]  # "font": sobrescreve a fonte do tema (seletor)
         s.bg0, s.bg1, s.a1, s.a2 = th['bg0'], th['bg1'], th['a1'], th['a2']
         br = spec.get('brand', {}); s.logo = Image.open(os.path.join(HERE, '..', br.get('logo', 'brand/aljava_transparente.png'))).convert('RGBA')
         s.handle = br.get('handle', '@aljava.gc.ofc'); s.n = len(spec['slides'])
