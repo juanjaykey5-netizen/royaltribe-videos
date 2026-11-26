@@ -1,0 +1,78 @@
+{
+ "theme": "ameixa",
+ "font": "montserrat",
+ "brand": {
+  "logo": "brand/aljava_transparente.png",
+  "handle": "@aljava.gc.ofc"
+ },
+ "foto_tint": 0.45,
+ "slides": [
+  {
+   "type": "capa",
+   "chip": "PARA INICIANTES",
+   "title": "Por onde começar a ler a Bíblia?",
+   "sub": "Spoiler: nem sempre é pela página 1.",
+   "art": "pomba"
+  },
+  {
+   "type": "versus",
+   "label": "MITO x REALIDADE",
+   "a_label": "O QUE MUITOS PENSAM",
+   "a_text": "Para ler a Bíblia é preciso começar em Gênesis e seguir até o fim sem pular nada.",
+   "b_label": "O QUE ENSINA A BIBLIOTECA",
+   "b_text": "A Bíblia reúne 66 livros de tipos diferentes. Você pode começar por um livro mais acessível."
+  },
+  {
+   "type": "verso",
+   "label": "SALMOS 119:105",
+   "text": "Lâmpada para os meus pés é tua palavra, e luz para o meu caminho.",
+   "ref": "Salmos 119:105",
+   "foot": "Almeida Revista e Corrigida",
+   "art": "biblia"
+  },
+  {
+   "type": "texto",
+   "label": "PRESTE ATENÇÃO",
+   "alert": true,
+   "title": "Ler é caminhar, passo a passo",
+   "body": "O salmista fala de lâmpada para os pés: luz para o próximo passo. Começar por um livro que você consegue entender já é um bom passo.",
+   "art": "ovelha"
+  },
+  {
+   "type": "texto",
+   "label": "SUGESTÃO DE 7 LIVROS",
+   "title": "Um roteiro possível",
+   "body": "Marcos, João, Atos, Salmos, Provérbios, Gênesis e Romanos. É uma sugestão comum de leitura, não uma regra bíblica.",
+   "source": "Bíblia protestante: 39 livros no AT e 27 no NT"
+  },
+  {
+   "type": "texto",
+   "label": "POR QUE ISSO IMPORTA",
+   "title": "Constância vale mais que pressa",
+   "body": "Um capítulo por dia, com calma, rende mais do que maratonas que logo se abandonam. Anote o que chamou sua atenção e converse com alguém.",
+   "art": "sol"
+  },
+  {
+   "type": "convite",
+   "title": "Quer ler junto com a gente?",
+   "bullets": [
+    "Passo a passo, direto no texto bíblico",
+    "Linguagem simples, sem complicar",
+    "Um grupo acolhedor para tirar dúvidas"
+   ],
+   "button": "Chame no direct: ESTUDAR"
+  },
+  {
+   "type": "cta",
+   "title": "Salve e compartilhe",
+   "sub": "Envie para quem quer começar a ler a Bíblia e não sabe por onde. Siga o Aljava GC para a próxima curiosidade.",
+   "aviso": "Conteúdo cristão e educativo. Texto bíblico: Almeida Revista e Corrigida. Reflexão pessoal, não substitui a sua igreja local.",
+   "art": "coracao"
+  }
+ ],
+ "imagens": [
+  "imagens/biblia/C01-1.jpg",
+  "imagens/biblia/C01-2.jpg",
+  "imagens/biblia/C01-3.jpg"
+ ]
+}

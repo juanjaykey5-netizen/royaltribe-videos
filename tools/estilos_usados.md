@@ -11,3 +11,4 @@
 
 2026-11-25 | car | padrao | 3 erros | score de credito | grafite | oswald | - | -
 2026-11-25 | car | padrao | alerta + checklist | cobranca de dividas (CFPB/FTC) | oceano | merriweather | - | -
+2026-11-26 | car | carrossel-foto | pergunta + mito x realidade | por onde comecar a ler a Biblia (C01) | ameixa | montserrat | - | -
