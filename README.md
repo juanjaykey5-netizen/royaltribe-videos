@@ -34,3 +34,6 @@ Cor, fonte e musica nao repetem por pelo menos 7 videos seguidos (voz: so as 4 e
 Cena de make_estilos.py com `"img": "imagens/arquivo.jpg"` usa a imagem como fundo (cobre 1080x1920, zoom lento, escurecida para o texto ler; exemplo: tools/specs_estilos/exemplo_cinetico_imagem.json).
 Fluxo: (1) 1 prompt por cena, em UMA chamada `vidiq_image_generate` (ate 8, aspectRatio 9:16, sem `model`, deixe o vidIQ escolher); custa ate 22 creditos por imagem (~22 observado; confira `vidiq_balance` antes). (2) `vidiq_job_poll` de cada job; a imagem fica salva em disco na pasta tool-results da sessao: copie para `imagens/AAAA-MM-DD_tema_NN.jpg` (o sandbox NAO baixa a imageUrl por curl: 403). (3) coloque o caminho em `img` de cada cena, rode make_estilos.py e siga o fluxo normal (voz, compose, upload).
 Prompts: ilustracao plana/semi-realista, paleta do tema do dia, composicao vertical com espaco vazio no centro para o texto, "no text, no people, no logos". Sem pessoas reais, sem marcas, sem depoimentos. Marcar `isAiGenerated` no destino TikTok quando houver imagem de IA.
+
+## Legendas e hashtags
+Ver planejamento/legendas_hashtags.md (receita da legenda, limite de 5 hashtags no Instagram, banco por tema).
