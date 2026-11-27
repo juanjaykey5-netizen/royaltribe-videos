@@ -1,0 +1,8 @@
+{"theme": "esmeralda", "durs": [5.33, 10.19, 11.08, 10.03, 3.0, 4.21], "scenes": [
+{"type": "hook", "l1": "Black Friday:", "l2": "mito ou fato?", "big": "MITO?", "ring": "0%", "ringlabel": "juros", "sub1": "Nem todo desconto", "sub2": "é o que parece"},
+{"type": "stat", "title": "Mito: sem juros", "big": "SE", "unit": "pagar no prazo", "line": "Senão, os juros voltam da compra", "chips": ["Leia o \"se\"", "Cartão de loja", "Anote a data", "Juros voltam"], "foot": "Fonte: CFPB (juros diferidos)"},
+{"type": "calc", "title": "Fato: no cartão", "rows": [["Prazo p/ contestar", "60 dias"], ["Perda sem autoriz.", "$50"]], "result": ["Cobrança errada? Aja rápido", "Conteste"], "foot": "Lei: Fair Credit Billing Act (FTC)"},
+{"type": "cards", "t1": "3 passos para", "t2": "comprar bem", "cards": [["1", "Leia o \"se\"", "Veja se o \"sem juros\" exige", "pagar tudo até a data final."], ["2", "Anote a data", "Pague antes do prazo,", "de preferência com lembrete."], ["3", "Guarde o recibo", "Confira a fatura e conteste", "erros em até 60 dias."]], "note": "Apps de parcelamento têm regras próprias."},
+{"type": "rule", "a": "Se não cabe", "b": "no orçamento,", "c": "não é desconto.", "w1": "Atenção: leia os termos antes de pagar.", "w2": "Ofertas e regras podem mudar."},
+{"type": "cta", "a": "Salva esse vídeo", "b": "e segue para mais dicas", "c": "de dinheiro nos EUA", "disc": ["Conteúdo educacional. Não é aconselhamento financeiro.", "Regras e ofertas podem mudar. Confira os termos.", "Fontes: CFPB, FTC (Fair Credit Billing Act)"]}
+]}
