@@ -1,0 +1,77 @@
+{
+ "estilo": "mito",
+ "theme": "aljava",
+ "font": "fira",
+ "durs": [
+  17.89,
+  10.11,
+  4.91,
+  7.08
+ ],
+ "brand": {
+  "logo": "brand/aljava_transparente.png",
+  "name": ""
+ },
+ "scenes": [
+  {
+   "type": "mito",
+   "myth": "Jonas foi engolido por uma baleia",
+   "text": "Deparou, pois, o Senhor um grande peixe",
+   "ref": "Jonas 1:17",
+   "foot": "Almeida Revista e Corrigida"
+  },
+  {
+   "type": "kin",
+   "bg": "liso",
+   "lines": [
+    "Mateus 12:40",
+    "traz a palavra",
+    "baleia"
+   ],
+   "hl": [
+    2
+   ],
+   "logo": true,
+   "disc": [
+    "ARC, tradução do grego (kētos): grande animal do mar",
+    "Fonte: léxico grego, Strong G2785"
+   ],
+   "img": "imagens/biblia/V01-1.jpg"
+  },
+  {
+   "type": "kin",
+   "bg": "liso",
+   "lines": [
+    "Jonas orou",
+    "a Deus de dentro",
+    "do peixe"
+   ],
+   "hl": [
+    1
+   ],
+   "logo": true,
+   "disc": [
+    "Jonas 2:1 (ARC)"
+   ],
+   "img": "imagens/biblia/V01-2.jpg"
+  },
+  {
+   "type": "kin",
+   "bg": "liso",
+   "lines": [
+    "Leia com calma",
+    "e estude a Bíblia",
+    "com o Aljava GC"
+   ],
+   "hl": [
+    2
+   ],
+   "logo": true,
+   "disc": [
+    "Reflexão cristã, não substitui sua igreja local.",
+    "Texto bíblico: Almeida Revista e Corrigida."
+   ],
+   "img": "imagens/biblia/V01-3.jpg"
+  }
+ ]
+}
