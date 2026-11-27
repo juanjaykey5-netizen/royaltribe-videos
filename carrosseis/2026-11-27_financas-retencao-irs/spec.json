@@ -1,0 +1,78 @@
+{
+ "theme": "por-do-sol",
+ "font": "nunito",
+ "handle": "@realstart.consultantofc",
+ "slides": [
+  {
+   "type": "cover",
+   "kicker": "IMPOSTOS NOS EUA",
+   "l1": "Surpresa no imposto em abril? Confira sua",
+   "hl": "retenção agora",
+   "sub": "Arraste: 1 ferramenta grátis do IRS"
+  },
+  {
+   "type": "alert",
+   "tag": "O PROBLEMA",
+   "title": "Retenção errada vira surpresa na declaração",
+   "body": [
+    "A empresa retém imposto de cada salário.",
+    "Se for pouco, você pode dever. Se for demais, o reembolso vem grande."
+   ]
+  },
+  {
+   "type": "alert",
+   "tag": "CUSTO DE NÃO AGIR",
+   "title": "Dever no fim do ano pode trazer multa",
+   "body": [
+    "O IRS cita potenciais multas para quem fica devendo.",
+    "Ajustar cedo evita uma mudança grande depois, só para compensar."
+   ]
+  },
+  {
+   "type": "tip",
+   "title": "Use a ferramenta gratuita do IRS",
+   "body": [
+    "Tax Withholding Estimator, no site irs.gov.",
+    "Tenha em mãos: comprovantes de renda, outras rendas e a declaração mais recente."
+   ],
+   "n": 1
+  },
+  {
+   "type": "tip",
+   "title": "Precisa mudar? Entregue o W-4 à empresa",
+   "body": [
+    "O Form W-4 vai para o seu empregador.",
+    "Não envie o W-4 ao IRS."
+   ],
+   "n": 2
+  },
+  {
+   "type": "tip",
+   "title": "Revise de novo quando a vida mudar",
+   "body": [
+    "Use a ferramenta uma vez por ano.",
+    "Revise também ao trocar de emprego, comprar casa, ter filho ou mudar o estado civil."
+   ],
+   "n": 3
+  },
+  {
+   "type": "list",
+   "title": "Checklist de 5 minutos",
+   "items": [
+    "Separe contracheque e a declaração anterior",
+    "Abra o Tax Withholding Estimator",
+    "Veja se precisa de um novo W-4",
+    "Entregue o W-4 ao empregador",
+    "Reveja se a vida mudar"
+   ]
+  },
+  {
+   "type": "cta",
+   "l1": "Quer organizar seus impostos?",
+   "hl": "Fale com a gente",
+   "sub": "Consultoria para famílias brasileiras e hispânicas na Flórida.",
+   "kw": "CONSULTORIA",
+   "disc": "Fonte: IRS (irs.gov). Conteúdo educacional, não é aconselhamento financeiro, jurídico ou de investimento."
+  }
+ ]
+}

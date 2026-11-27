@@ -13,3 +13,4 @@
 2026-11-25 | car | padrao | alerta + checklist | cobranca de dividas (CFPB/FTC) | oceano | merriweather | - | -
 2026-11-26 | car | carrossel-foto | pergunta + mito x realidade | por onde comecar a ler a Biblia (C01) | ameixa | montserrat | - | -
 2026-11-26 | fin | padrao | mito x fato | Black Friday: juros diferidos e protecao do cartao | esmeralda | montserrat | Keren | dream
+2026-11-27 | car | padrao | problema + 3 passos + checklist | retencao de imposto (IRS Tax Withholding Estimator / W-4) | por-do-sol | nunito | - | -
