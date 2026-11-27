@@ -141,48 +141,46 @@ def mito(sp, d):
 LET = ['A', 'B', 'C']
 
 
-def _opts(img, opts, t, t0, correct=None, show_ans=0.0):
+def _opts(img, opts, t, t0, correct=None, show_ans=0.0, y0=790, step=205):
     for i, o in enumerate(opts):
-        a = eo3(pr(t, t0 + 0.5 * i, 0.4)); y = 830 + i * 165
+        a = eo3(pr(t, t0 + 0.5 * i, 0.4)); y = y0 + i * step
         dim = 1.0
-        fill = (255, 255, 255, 34); out = M.GOLD
+        fill = (15, 8, 25, 150); out = M.GOLD
         txtc = M.WHITE
         if correct is not None and show_ans > 0:
             if i == correct:
                 fill = M.GOLD + (255,); txtc = M.BG0; out = M.WHITE
-            else: dim = 1 - 0.65 * show_ans
-        RR(img, (90 + (1 - min(1, a)) * 500, y - 70, 990 + (1 - min(1, a)) * 500, y + 70), 36, fill, a=a * dim, outline=out, width=4)
+            else: dim = 1 - 0.55 * show_ans
         xo = (1 - min(1, a)) * 500
-        circle(img, 170 + xo, y, 44, M.GOLD if not (correct == i and show_ans > 0) else M.BG0, a=a * dim)
-        T(img, LET[i], 170 + xo, y - 2, 46, M.BG0 if not (correct == i and show_ans > 0) else M.GOLD, a=a * dim, shadow=False)
-        T(img, o, 250 + xo, y, 42, txtc, a=a * dim, anchor='lm', font='Poppins-Medium', shadow=correct is None or show_ans <= 0 or correct != i)
+        RR(img, (60 + xo, y - 92, 1020 + xo, y + 92), 44, fill, a=a * dim, outline=out, width=5)
+        circle(img, 160 + xo, y, 58, M.GOLD if not (correct == i and show_ans > 0) else M.BG0, a=a * dim)
+        T(img, LET[i], 160 + xo, y - 2, 64, M.BG0 if not (correct == i and show_ans > 0) else M.GOLD, a=a * dim, shadow=False)
+        T(img, o, 245 + xo, y, 68, txtc, a=a * dim, anchor='lm', font='Poppins-Bold', shadow=correct is None or show_ans <= 0 or correct != i)
 
 
 def quizq(sp, d):
     def f(img, t):
-        T(img, sp.get('label', 'QUIZ BÍBLICO'), W / 2, 340, 44, M.GOLD, a=eo3(pr(t, 0.05, 0.3)))
-        ql = wrap(sp['q'], 'Poppins-Bold', 66, 860)
-        lines_block(img, ql, W / 2, 520, 66, M.WHITE, eo3(pr(t, 0.2, 0.5)))
+        T(img, sp.get('label', 'QUIZ BÍBLICO'), W / 2, 320, 52, M.GOLD, a=eo3(pr(t, 0.05, 0.3)))
+        ql = wrap(sp['q'], 'Poppins-Bold', 90, 920)
+        lines_block(img, ql, W / 2, 470, 90, M.WHITE, eo3(pr(t, 0.2, 0.5)), step=108)
         _opts(img, sp['opts'], t, 1.0)
-        # contagem regressiva
         T0 = 2.8; T1 = d - 0.5
         k = 1 - pr(t, T0, T1 - T0)
-        RR(img, (90, 1260, 990, 1286), 13, (255, 255, 255, 40), a=eo3(pr(t, 2.4, 0.3)))
-        if k > 0.01: RR(img, (90, 1260, 90 + 900 * k, 1286), 13, M.GOLD + (255,), a=eo3(pr(t, 2.4, 0.3)))
-        T(img, 'Pense rápido…', W / 2, 1340, 36, M.MUTED, a=eo3(pr(t, 2.4, 0.3)), font='Poppins-Medium')
+        RR(img, (90, 1340, 990, 1366), 13, (255, 255, 255, 60), a=eo3(pr(t, 2.4, 0.3)))
+        if k > 0.01: RR(img, (90, 1340, 90 + 900 * k, 1366), 13, M.GOLD + (255,), a=eo3(pr(t, 2.4, 0.3)))
     return f
 
 
 def quizans(sp, d):
     def f(img, t):
-        T(img, 'RESPOSTA', W / 2, 340, 44, M.GOLD, a=eo3(pr(t, 0.05, 0.3)))
-        ql = wrap(sp['q'], 'Poppins-Bold', 60, 860)
-        lines_block(img, ql, W / 2, 500, 60, M.WHITE, 1.0)
-        _opts(img, sp['opts'], 99, 0, correct=sp['correct'], show_ans=eo3(pr(t, 0.6, 0.5)))
+        T(img, 'RESPOSTA', W / 2, 320, 52, M.GOLD, a=eo3(pr(t, 0.05, 0.3)))
+        ql = wrap(sp['q'], 'Poppins-Bold', 76, 920)
+        lines_block(img, ql, W / 2, 450, 76, M.WHITE, 1.0, step=94)
+        _opts(img, sp['opts'], 99, 0, correct=sp['correct'], show_ans=eo3(pr(t, 0.6, 0.5)), y0=720, step=200)
         a = eo3(pr(t, 1.6, 0.5))
-        tl = wrap('“' + sp['text'] + '”', 'Poppins-Medium', 40, 840)
-        lines_block(img, tl, W / 2, 1300, 40, M.WHITE, a, step=56, font='Poppins-Medium')
-        T(img, sp['ref'], W / 2, 1300 + len(tl) * 56 + 20, 44, M.GOLD, a=eo3(pr(t, 2.4, 0.5)))
+        tl = wrap(sp['text'], 'Poppins-Bold', 78, 920)
+        lines_block(img, tl, W / 2, 1275, 78, M.WHITE, a, step=90, font='Poppins-Bold')
+        T(img, sp['ref'], W / 2, 1275 + len(tl) * 90 + 30, 54, M.GOLD, a=eo3(pr(t, 2.4, 0.5)))
     return f
 
 
