@@ -160,7 +160,7 @@ def _opts(img, opts, t, t0, correct=None, show_ans=0.0):
 
 def quizq(sp, d):
     def f(img, t):
-        T(img, 'QUIZ BÍBLICO', W / 2, 340, 44, M.GOLD, a=eo3(pr(t, 0.05, 0.3)))
+        T(img, sp.get('label', 'QUIZ BÍBLICO'), W / 2, 340, 44, M.GOLD, a=eo3(pr(t, 0.05, 0.3)))
         ql = wrap(sp['q'], 'Poppins-Bold', 66, 860)
         lines_block(img, ql, W / 2, 520, 66, M.WHITE, eo3(pr(t, 0.2, 0.5)))
         _opts(img, sp['opts'], t, 1.0)
